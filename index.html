@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f6f3ec">
+  <title>L’Atelier Universel de Broderie</title>
+  <style>
+    :root {
+      --paper: #f6f3ec;
+      --panel: #fffefa;
+      --ink: #24342d;
+      --muted: #849087;
+      --line: #e9e7df;
+      --green: #375c49;
+      --green-light: #eaf0e9;
+      --coral: #d87861;
+      --gold: #d3a85a;
+      --shadow: 0 18px 48px rgba(42, 51, 43, .08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 13px;
+    }
+    button, input, select { font: inherit; }
+    button { color: inherit; }
+    .app { min-height: 100vh; }
+    .topbar {
+      height: 76px;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      background: rgba(255,254,250,.86);
+      border-bottom: 1px solid var(--line);
+    }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 245px; }
+    .brand-mark {
+      width: 39px; height: 39px; border-radius: 50%;
+      background: var(--green); color: #fff;
+      display: grid; place-items: center; font-size: 19px;
+      box-shadow: 0 5px 14px rgba(55,92,73,.18);
+    }
+    .brand-name { font-family: Georgia, serif; font-size: 17px; letter-spacing: .01em; }
+    .brand-sub { font-size: 9px; letter-spacing: .17em; color: #879087; margin-top: 3px; }
+    .top-center { display: flex; align-items: center; gap: 12px; }
+    .project-name { font-family: Georgia, serif; font-size: 16px; }
+    .save-state { color: #8b958c; font-size: 11px; display: flex; align-items: center; gap: 6px; }
+    .save-state:before { content:""; width:6px;height:6px;border-radius:50%;background:#83a78b; }
+    .top-actions { display: flex; gap: 9px; align-items: center; }
+    .button {
+      border: 1px solid #e4e5dc;
+      background: #fffefa;
+      border-radius: 9px;
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: .2s ease;
+      display: inline-flex; align-items: center; gap: 8px;
+      white-space: nowrap;
+    }
+    .button:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(34,49,39,.08); }
+    .button.primary { background: var(--green); color: white; border-color: var(--green); }
+    .button.quiet { background: transparent; }
+    .button.small { padding: 8px 11px; font-size: 11px; }
+    .button.icon { width: 35px; height: 35px; padding: 0; justify-content: center; }
+    .workspace { max-width: 1600px; margin: auto; padding: 23px 28px 28px; }
+    .workflow {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0; margin: 0 auto 22px; max-width: 1050px;
+    }
+    .step {
+      display: flex; align-items: center; gap: 8px; color: #9aa198;
+      cursor: pointer; white-space: nowrap; font-size: 11px;
+    }
+    .step-number {
+      width: 25px; height: 25px; border-radius: 50%; display: grid; place-items: center;
+      border: 1px solid #dedfd7; background: #faf9f5; font-size: 10px;
+    }
+    .step.active { color: var(--green); font-weight: 650; }
+    .step.active .step-number { background: var(--green); border-color: var(--green); color: white; }
+    .step.done .step-number { background: #e3ece3; border-color: #d6e3d6; color: var(--green); }
+    .step-line { height: 1px; width: clamp(18px, 3.2vw, 46px); background: #dfdfd7; margin: 0 9px; }
+    .layout { display: grid; grid-template-columns: 276px minmax(400px,1fr) 290px; gap: 16px; align-items: stretch; }
+    .panel {
+      background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(44,52,44,.025);
+    }
+    .left-panel, .right-panel { padding: 19px; }
+    .section-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .section-title { margin: 0; font-size: 13px; font-weight: 650; }
+    .eyebrow { font-size: 9px; letter-spacing: .15em; color: #9a9e94; text-transform: uppercase; }
+    .source-drop {
+      border: 1px dashed #d4d9cf; background: #fbfbf7; border-radius: 11px;
+      padding: 17px 12px 14px; text-align: center; cursor: pointer; transition: .2s;
+    }
+    .source-drop:hover, .source-drop.dragging { border-color: #6f957a; background: #f3f7f0; }
+    .upload-icon {
+      width: 36px;height: 36px;border-radius: 11px;background: #edf2eb;color: var(--green);
+      display: grid; place-items: center; margin: 0 auto 9px; font-size: 17px;
+    }
+    .source-drop strong { font-size: 11px; display: block; margin-bottom: 4px; }
+    .source-drop span { font-size: 10px; color: #979d94; line-height: 1.5; }
+    .file-name { font-size: 10px; color: var(--green); margin-top: 7px; overflow-wrap: anywhere; }
+    .or-divider { display: flex; align-items: center; gap: 9px; margin: 13px 0; color: #a5a99f; font-size: 9px; }
+    .or-divider:before, .or-divider:after { content:""; height:1px; flex:1; background:#ecebe5; }
+    .prompt-box {
+      width:100%; min-height:70px; resize:vertical; border:1px solid #e8e8e0; border-radius:9px;
+      background:#fffefa; padding:10px; color:var(--ink); outline:none; font-size:11px;
+    }
+    .prompt-box:focus { border-color:#8aa18e; }
+    .prompt-actions { display:flex; justify-content:space-between; align-items:center; margin-top:8px; }
+    .helper { color:#a0a49b; font-size:9px; }
+    .analyze-button { width:100%; justify-content:center; margin-top:11px; padding:11px; }
+    .divider { height:1px; background:#efeee8; margin:18px 0; }
+    .pattern-row { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:11px; }
+    .pattern-row select {
+      border:1px solid #e8e8e0; background:white; border-radius:7px; padding:7px 9px;
+      color:var(--ink); font-size:10px; outline:none;
+    }
+    .mini-patterns { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; }
+    .mini-card {
+      border:1px solid #ecebe4; border-radius:8px; background:#fbfaf6; padding:7px 4px;
+      text-align:center; cursor:pointer; transition:.2s;
+    }
+    .mini-card:hover, .mini-card.selected { border-color:#91a793; background:#f2f6f0; }
+    .mini-art { height:38px; display:grid; place-items:center; font-size:22px; }
+    .mini-card span { color:#848c82; font-size:9px; }
+    .tip-card {
+      border-radius:10px; background:#f5f4ed; padding:11px; display:flex; gap:9px;
+      color:#798176; font-size:10px; line-height:1.5;
+    }
+    .tip-icon { color:var(--gold); font-size:14px; }
+    .center-panel { position:relative; min-height:570px; overflow:hidden; background:#efede5; }
+    .scene-header {
+      position:absolute; z-index:2; top:16px; left:18px; right:18px;
+      display:flex; align-items:flex-start; justify-content:space-between; pointer-events:none;
+    }
+    .scene-header > * { pointer-events:auto; }
+    .scene-title { font-family:Georgia,serif; font-size:17px; margin:0 0 4px; }
+    .scene-subtitle { font-size:10px; color:#858c82; }
+    .scene-controls { display:flex; gap:6px; }
+    .scene-control {
+      border:1px solid rgba(225,224,214,.9); background:rgba(255,254,250,.88); backdrop-filter:blur(8px);
+      height:33px; min-width:34px; border-radius:8px; cursor:pointer; color:#56645a;
+    }
+    .scene-control.active { background:var(--green); color:white; border-color:var(--green); }
+    #scene { position:absolute; inset:0; }
+    #scene canvas { display:block; width:100%; height:100%; }
+    .scene-hint {
+      position:absolute; z-index:2; bottom:15px; left:50%; transform:translateX(-50%);
+      color:#788078; font-size:10px; background:rgba(255,254,250,.75); border-radius:20px;
+      padding:7px 12px; white-space:nowrap; pointer-events:none;
+    }
+    .scene-badge {
+      position:absolute; z-index:2; left:17px; bottom:16px; padding:7px 10px; border-radius:8px;
+      background:rgba(255,254,250,.86); color:#647165; font-size:10px;
+    }
+    .view-toolbar { position:absolute; right:16px; bottom:14px; z-index:3; display:flex; gap:5px; }
+    .view-toolbar button {
+      border:1px solid rgba(225,224,214,.9); background:rgba(255,254,250,.9); border-radius:7px;
+      height:29px; padding:0 9px; font-size:9px; cursor:pointer;
+    }
+    .view-toolbar button.active { color:white; background:var(--green); border-color:var(--green); }
+    .right-panel { display:flex; flex-direction:column; gap:0; }
+    .project-overview {
+      padding:11px; background:#f8f7f2; border:1px solid #eeede7; border-radius:10px;
+      display:flex; align-items:center; gap:10px; margin-bottom:15px;
+    }
+    .overview-icon { width:39px; height:39px; border-radius:8px; display:grid; place-items:center; background:#efe5dc; font-size:22px; }
+    .overview-name { font-size:11px; font-weight:650; }
+    .overview-meta { color:#90968d; font-size:9px; margin-top:4px; }
+    .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:17px; }
+    .stat { padding:10px; border:1px solid #efeee8; border-radius:9px; }
+    .stat strong { display:block; font-family:Georgia,serif; font-size:18px; font-weight:500; }
+    .stat span { display:block; color:#92988f; font-size:9px; margin-top:3px; }
+    .palette-title { display:flex; align-items:center; justify-content:space-between; margin:2px 0 10px; }
+    .palette-title strong { font-size:11px; }
+    .palette-title span { color:#92988f; font-size:9px; }
+    .thread-list { display:flex; flex-direction:column; gap:8px; }
+    .thread-row { display:grid; grid-template-columns:18px 1fr auto; align-items:center; gap:8px; font-size:10px; }
+    .thread-swatch { width:15px;height:15px;border-radius:5px; border:1px solid rgba(0,0,0,.07); }
+    .thread-info { min-width:0; }
+    .thread-info strong { font-size:10px; font-weight:550; }
+    .thread-info small { display:block; color:#999e95; font-size:9px; margin-top:2px; }
+    .thread-quantity { color:#7d857b; font-size:9px; white-space:nowrap; }
+    .stock-pill {
+      border:0; padding:4px 7px; border-radius:12px; font-size:8px; cursor:pointer;
+      background:#edf3ea; color:#66816a; margin-left:4px;
+    }
+    .stock-pill.missing { background:#f7e9e4; color:#bc705d; }
+    .missing-note {
+      margin-top:12px; background:#fbf1ed; color:#a86d5b; border-radius:8px; padding:9px;
+      font-size:9px; line-height:1.45;
+    }
+    .progress-section { margin-top:auto; padding-top:17px; }
+    .progress-heading { display:flex; justify-content:space-between; align-items:center; font-size:10px; margin-bottom:8px; }
+    .progress-heading span:last-child { color:var(--green); font-weight:650; }
+    .progress-track { width:100%; height:5px; border-radius:4px; background:#eeede7; overflow:hidden; }
+    .progress-fill { height:100%; width:0%; background:linear-gradient(90deg,#6e9475,#a5b897); border-radius:4px; transition:width .35s; }
+    .progress-controls { display:grid; grid-template-columns:1fr auto; gap:7px; margin-top:11px; }
+    .progress-controls .button { justify-content:center; padding:9px 8px; font-size:10px; }
+    .range-row { display:flex; align-items:center; gap:8px; margin-top:12px; color:#92988e; font-size:9px; }
+    input[type="range"] { accent-color:var(--green); flex:1; min-width:0; }
+    .status-line { color:#8c958b; font-size:9px; margin-top:11px; min-height:14px; }
+    .bottom-note { display:flex; align-items:center; justify-content:space-between; color:#939990; font-size:10px; padding:15px 3px 0; }
+    .bottom-note strong { color:#68766b; font-weight:500; }
+    .toast {
+      position:fixed; z-index:10; bottom:22px; left:50%; transform:translate(-50%,15px);
+      opacity:0; pointer-events:none; background:#263a30; color:white; padding:11px 17px;
+      border-radius:9px; box-shadow:var(--shadow); font-size:11px; transition:.25s;
+    }
+    .toast.show { opacity:1; transform:translate(-50%,0); }
+    .modal-backdrop {
+      display:none; position:fixed; inset:0; z-index:20; background:rgba(31,41,34,.36);
+      align-items:center; justify-content:center; padding:18px;
+    }
+    .modal-backdrop.show { display:flex; }
+    .modal { background:#fffefa; border:1px solid var(--line); border-radius:15px; width:min(420px,100%); padding:22px; box-shadow:var(--shadow); }
+    .modal h2 { font-family:Georgia,serif; font-weight:500; font-size:20px; margin:0 0 8px; }
+    .modal p { color:#818980; font-size:11px; line-height:1.6; }
+    .modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:19px; }
+    @media(max-width:1100px) {
+      .layout { grid-template-columns:240px minmax(360px,1fr); }
+      .right-panel { grid-column:1 / -1; display:grid; grid-template-columns:1fr 1fr; gap:12px 20px; }
+      .right-panel > .section-heading { grid-column:1/-1; margin-bottom:0; }
+      .right-panel .progress-section { margin-top:0; }
+      .workflow { overflow-x:auto; justify-content:flex-start; padding-bottom:5px; }
+    }
+    @media(max-width:720px) {
+      .topbar { height:64px; padding:0 15px; }
+      .brand { min-width:0; }
+      .brand-name { font-size:14px; }
+      .brand-sub { font-size:8px; }
+      .top-center { display:none; }
+      .top-actions .button:not(.primary) { display:none; }
+      .top-actions .button { padding:9px 10px; font-size:10px; }
+      .workspace { padding:16px 12px 22px; }
+      .workflow { margin-bottom:15px; gap:0; }
+      .step { font-size:9px; }
+      .step-line { width:17px; margin:0 5px; }
+      .step-number { width:22px;height:22px; }
+      .layout { display:flex; flex-direction:column; }
+      .center-panel { order:0; min-height:420px; }
+      .left-panel { order:1; }
+      .right-panel { order:2; display:flex; }
+      .scene-hint { display:none; }
+      .bottom-note { gap:10px; font-size:9px; }
+    }
+    @media(max-width:390px) {
+      .brand-mark { width:34px;height:34px; }
+      .brand-name { font-size:12px; }
+      .center-panel { min-height:360px; }
+      .scene-title { font-size:15px; }
+      .scene-controls { gap:3px; }
+      .scene-control { min-width:30px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">✳</div>
+      <div>
+        <div class="brand-name">L’Atelier Universel</div>
+        <div class="brand-sub">DE BRODERIE</div>
+      </div>
+    </div>
+    <div class="top-center">
+      <div class="project-name" id="projectName">Cœur sauvage</div>
+      <div class="save-state" id="saveState">Enregistré à l’instant</div>
+    </div>
+    <div class="top-actions">
+      <button class="button small" id="newProject">＋ Nouveau</button>
+      <button class="button primary small" id="exportBtn">⇩ &nbsp;Exporter le patron</button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <nav class="workflow" aria-label="Étapes du projet">
+      <div class="step active" data-step="0"><span class="step-number">1</span><span>Importer / créer</span></div><div class="step-line"></div>
+      <div class="step" data-step="1"><span class="step-number">2</span><span>Analyser</span></div><div class="step-line"></div>
+      <div class="step" data-step="2"><span class="step-number">3</span><span>Reconstruire</span></div><div class="step-line"></div>
+      <div class="step" data-step="3"><span class="step-number">4</span><span>Révéler</span></div><div class="step-line"></div>
+      <div class="step" data-step="4"><span class="step-number">5</span><span>Valider</span></div><div class="step-line"></div>
+      <div class="step" data-step="5"><span class="step-number">6</span><span>Broder</span></div><div class="step-line"></div>
+      <div class="step" data-step="6"><span class="step-number">7</span><span>Suivre</span></div><div class="step-line"></div>
+      <div class="step" data-step="7"><span class="step-number">8</span><span>Terminer</span></div>
+    </nav>
+
+    <div class="layout">
+      <aside class="panel left-panel">
+        <div class="section-heading">
+          <div><div class="eyebrow">Point de départ</div><h2 class="section-title" style="margin-top:5px">Votre source</h2></div>
+          <span style="font-size:16px;color:#9ba398">↗</span>
+        </div>
+
+        <label class="source-drop" id="dropZone" for="fileInput">
+          <div class="upload-icon">↑</div>
+          <strong>Déposez votre fichier ici</strong>
+          <span>ou cliquez pour parcourir<br>Photo · image · PDF · scan · patron</span>
+          <div class="file-name" id="fileName"></div>
+        </label>
+        <input type="file" id="fileInput" accept="image/*,.pdf,.png,.jpg,.jpeg,.webp,.svg" hidden>
+
+        <div class="or-divider">ou décrivez votre idée</div>
+        <textarea class="prompt-box" id="promptInput" placeholder="Ex. : une branche de mimosa doré, 32 × 32 points…"></textarea>
+        <div class="prompt-actions">
+          <span class="helper">L’IA vous aide à la mettre en grille.</span>
+          <button class="button small" id="createPrompt">Créer ✦</button>
+        </div>
+        <button class="button primary analyze-button" id="analyzeBtn">✧ &nbsp; Analyser la source</button>
+
+        <div class="divider"></div>
+        <div class="section-heading" style="margin-bottom:10px">
+          <h2 class="section-title">Ou partir d’un modèle</h2>
+          <span class="eyebrow">3 idées</span>
+        </div>
+        <div class="pattern-row">
+          <span class="helper">Collection atelier</span>
+          <select id="sizeSelect" aria-label="Taille du patron">
+            <option value="36">36 × 36 pts</option>
+            <option value="28">28 × 28 pts</option>
+            <option value="44">44 × 44 pts</option>
+          </select>
+        </div>
+        <div class="mini-patterns">
+          <button class="mini-card selected" data-pattern="heart"><div class="mini-art">♥</div><span>Cœur sauvage</span></button>
+          <button class="mini-card" data-pattern="flower"><div class="mini-art">✿</div><span>Fleur des champs</span></button>
+          <button class="mini-card" data-pattern="moon"><div class="mini-art">☾</div><span>Jardin de lune</span></button>
+        </div>
+        <div class="divider"></div>
+        <div class="tip-card"><span class="tip-icon">✦</span><span>Importez une photo ou un patron : nous le transformons en grille claire, avec fils et fournitures à prévoir.</span></div>
+      </aside>
+
+      <section class="panel center-panel" aria-label="Aperçu 3D du patron">
+        <div class="scene-header">
+          <div><h1 class="scene-title">Cœur sauvage</h1><div class="scene-subtitle">Aperçu du patron · toile Aïda 14 ct</div></div>
+          <div class="scene-controls">
+            <button class="scene-control active" id="view3d" title="Vue en relief">3D</button>
+            <button class="scene-control" id="viewFlat" title="Vue de face">▦</button>
+            <button class="scene-control" id="resetCamera" title="Réinitialiser la vue">⟳</button>
+          </div>
+        </div>
+        <div id="scene"></div>
+        <div class="scene-badge" id="sceneBadge">36 × 36 points · 284 croix</div>
+        <div class="scene-hint">Glissez pour tourner · molette pour zoomer</div>
+        <div class="view-toolbar">
+          <button id="gridToggle" class="active">Grille</button>
+          <button id="stitchToggle" class="active">Croix</button>
+        </div>
+      </section>
+
+      <aside class="panel right-panel">
+        <div class="section-heading">
+          <div><div class="eyebrow">Votre patron</div><h2 class="section-title" style="margin-top:5px">Fiche projet</h2></div>
+          <button class="button icon" id="infoBtn" title="Informations">i</button>
+        </div>
+        <div class="project-overview">
+          <div class="overview-icon" id="overviewIcon">♥</div>
+          <div><div class="overview-name" id="overviewName">Cœur sauvage</div><div class="overview-meta" id="overviewMeta">Niveau facile · Point de croix</div></div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat"><strong id="stitchCount">284</strong><span>points à broder</span></div>
+          <div class="stat"><strong id="colorCount">5</strong><span>couleurs de fil</span></div>
+          <div class="stat"><strong id="fabricSize">6,5 × 6,5</strong><span>cm sur toile 14 ct</span></div>
+          <div class="stat"><strong id="timeEstimate">3 h 20</strong><span>temps estimé</span></div>
+        </div>
+        <div class="palette-title"><strong>Palette de fils</strong><span id="paletteMeta">5 coloris · mouliné</span></div>
+        <div class="thread-list" id="threadList"></div>
+        <div class="missing-note" id="missingNote">Il vous manque <strong>1 coloris</strong> pour commencer. Cliquez sur « à acheter » pour le marquer en stock.</div>
+        <div class="progress-section">
+          <div class="progress-heading"><span>Avancement du projet</span><span id="progressText">0 %</span></div>
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="range-row"><span>Révéler</span><input type="range" min="0" max="100" value="100" id="revealRange"><span id="revealValue">100 %</span></div>
+          <div class="progress-controls">
+            <button class="button primary" id="stitchBtn">▶ &nbsp; Commencer</button>
+            <button class="button" id="validateBtn">✓ Valider</button>
+          </div>
+          <div class="status-line" id="statusLine">Patron prêt à être brodé.</div>
+        </div>
+      </aside>
+    </div>
+    <div class="bottom-note">
+      <span>Un projet à la fois, <strong>un point après l’autre.</strong></span>
+      <span>✳ &nbsp;Votre travail est sauvegardé automatiquement</span>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <div class="eyebrow">L’Atelier Universel</div>
+    <h2 id="modalTitle">Votre patron est prêt</h2>
+    <p id="modalText">Votre projet est structuré en grille, ses couleurs sont identifiées et sa liste de fils est prête. Vous pouvez ajuster la vue, marquer vos fils en stock et suivre votre avancée point par point.</p>
+    <div class="modal-actions"><button class="button" id="closeModal">Continuer</button><button class="button primary" id="modalConfirm">C’est parti</button></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/controls/OrbitControls.js"></script>
+<script>
+(() => {
+  const colors = [
+    {name:"Rouge garance", code:"DMC 321", hex:"#b8434d"},
+    {name:"Rose poudré", code:"DMC 3716", hex:"#e89a9d"},
+    {name:"Rose clair", code:"DMC 818", hex:"#f2c6c5"},
+    {name:"Vert sauge", code:"DMC 524", hex:"#8ca58b"},
+    {name:"Vert profond", code:"DMC 3051", hex:"#536b55"},
+    {name:"Miel doré", code:"DMC 725", hex:"#d8a94e"},
+    {name:"Crème", code:"DMC 712", hex:"#eadcb8"}
+  ];
+  const paletteSets = {
+    heart:[0,1,2,3,4],
+    flower:[5,6,3,4,1],
+    moon:[4,3,5,6,2]
+  };
+  const names = {heart:"Cœur sauvage",flower:"Fleur des champs",moon:"Jardin de lune"};
+  const icons = {heart:"♥",flower:"✿",moon:"☾"};
+  let size = 36, type = "heart", pattern = [], scene, camera, renderer, controls, boardGroup, stitchGroup;
+  let gridObject, stitchesObject, reveal = 100, progress = 0, timer = null, analysisBusy = false;
+  let showGrid = true, showStitches = true, savedStocks = new Set(["DMC 3716","DMC 818","DMC 524","DMC 3051"]);
+  const $ = id => document.getElementById(id);
+  const toast = message => {
+    const el = $("toast"); el.textContent = message; el.classList.add("show");
+    clearTimeout(toast.timer); toast.timer = setTimeout(() => el.classList.remove("show"), 2600);
+  };
+
+  function buildPattern(kind, n) {
+    const grid = Array.from({length:n}, () => Array(n).fill(-1));
+    const mid = (n - 1) / 2;
+    if (kind === "heart") {
+      const scale = n * .43;
+      for (let r=0;r<n;r++) for (let c=0;c<n;c++) {
+        const x=(c-mid)/scale, y=(mid-r)/scale;
+        const q=Math.pow(x*x+y*y-1,3)-x*x*y*y*y;
+        if (q<=0) {
+          const edge = Math.abs(q) < .2 || q > -.14;
+          if (edge) grid[r][c]=0;
+          else if (x < -.28 && y > .16) grid[r][c]=2;
+          else if (x > .35 && y < -.12) grid[r][c]=1;
+          else grid[r][c]=Math.abs(x)+Math.abs(y)>.82 ? 1 : 2;
+        }
+      }
+      // Subtle botanical sprigs frame the heart.
+      for (let k=0;k<7;k++) {
+        const r=Math.floor(n*.39+k*.62), left=Math.floor(n*.20+k*.4), right=n-1-left;
+        if (r<n-2) {
+          grid[r][left]=k%2?3:4; grid[r][right]=k%2?4:3;
+        }
+      }
+    } else if (kind === "flower") {
+      const cx=mid, cy=mid, scale=n*.29;
+      for (let r=0;r<n;r++) for (let c=0;c<n;c++) {
+        const dx=(c-cx)/scale, dy=(r-cy)/scale, rad=Math.hypot(dx,dy), a=Math.atan2(dy,dx);
+        const petal=.64+.27*Math.cos(a*8);
+        if (rad<petal) grid[r][c]=rad<.18?5:(rad>.5?6:1);
+        const stemX=mid+Math.sin(r*.14)*2;
+        if (r>mid+4 && Math.abs(c-stemX)<1.35) grid[r][c]=3;
+        if (r>mid+5 && r<mid+12 && (Math.abs(c-(mid-5))<1.5 || Math.abs(c-(mid+5))<1.5)) grid[r][c]=4;
+      }
+    } else {
+      const cx=mid-2, cy=mid;
+      for (let r=0;r<n;r++) for (let c=0;c<n;c++) {
+        const x=(c-cx)/(n*.31), y=(r-cy)/(n*.34);
+        const moon=Math.hypot(x,y)<1 && Math.hypot(x-.43,y-.02)>.79;
+        if (moon) grid[r][c]=Math.hypot(x,y)>.84?5:6;
+        const starPoints=[[.22,.18],[-.48,-.42],[.5,-.5],[-.58,.42],[.35,.58]];
+        for(const [sx,sy] of starPoints) if(Math.abs((c-mid)/n-sx)<.025 && Math.abs((r-mid)/n-sy)<.025) grid[r][c]=2;
+        if (r>n*.72 && r<n*.84 && Math.abs(c-mid)<3) grid[r][c]=3;
+        if (r>n*.76 && (Math.abs(c-mid-5)<2 || Math.abs(c-mid+5)<2)) grid[r][c]=4;
+      }
+    }
+    // Trim ornamental sprigs from very small layouts.
+    return grid;
+  }
+
+  function countStitches() { return pattern.reduce((sum,row)=>sum+row.filter(v=>v>=0).length,0); }
+  function usedColors() { return [...new Set(pattern.flat().filter(v=>v>=0))]; }
+
+  function renderThreads() {
+    const used=usedColors(), list=$("threadList");
+    list.innerHTML="";
+    used.forEach(idx=>{
+      const item=colors[idx], quantity=Math.max(1,Math.ceil(pattern.flat().filter(v=>v===idx).length/70));
+      const stocked=savedStocks.has(item.code);
+      const row=document.createElement("div"); row.className="thread-row";
+      row.innerHTML=`<span class="thread-swatch" style="background:${item.hex}"></span>
+        <span class="thread-info"><strong>${item.name}</strong><small>${item.code} · mouliné</small></span>
+        <span class="thread-quantity">${quantity} échev. <button class="stock-pill ${stocked?"":"missing"}" data-code="${item.code}">${stocked?"en stock":"à acheter"}</button></span>`;
+      list.appendChild(row);
+    });
+    list.querySelectorAll(".stock-pill").forEach(btn=>btn.addEventListener("click",()=>{
+      if(savedStocks.has(btn.dataset.code)) savedStocks.delete(btn.dataset.code); else savedStocks.add(btn.dataset.code);
+      renderThreads(); updateMissing();
+    }));
+    $("colorCount").textContent=used.length;
+    $("paletteMeta").textContent=`${used.length} coloris · mouliné`;
+    updateMissing();
+  }
+  function updateMissing() {
+    const missing=usedColors().filter(i=>!savedStocks.has(colors[i].code)).length;
+    $("missingNote").style.display=missing?"block":"none";
+    $("missingNote").innerHTML=missing===1?'Il vous manque <strong>1 coloris</strong> pour commencer. Cliquez sur « à acheter » pour le marquer en stock.':`Il vous manque <strong>${missing} coloris</strong> pour commencer. Cliquez sur « à acheter » pour les marquer en stock.`;
+  }
+
+  function updateDetails() {
+    const count=countStitches(), used=usedColors();
+    $("projectName").textContent=names[type]; $("overviewName").textContent=names[type];
+    $("overviewIcon").textContent=icons[type];
+    $("sceneBadge").textContent=`${size} × ${size} points · ${count} croix`;
+    $("stitchCount").textContent=count.toLocaleString("fr-FR");
+    $("fabricSize").textContent=`${(size/5.5).toFixed(1).replace(".",",")} × ${(size/5.5).toFixed(1).replace(".",",")}`;
+    const mins=Math.round(count*.7), hrs=Math.floor(mins/60), rem=mins%60;
+    $("timeEstimate").textContent=`${hrs} h ${String(rem).padStart(2,"0")}`;
+    $("sceneBadge").textContent=`${size} × ${size} points · ${count} croix`;
+    renderThreads();
+    renderThreePattern();
+    updateProgress();
+  }
+
+  function initThree() {
+    const host=$("scene");
+    scene=new THREE.Scene(); scene.background=new THREE.Color("#efede5");
+    camera=new THREE.PerspectiveCamera(35,1,.1,100);
+    camera.position.set(8,8.5,10);
+    renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:"high-performance"});
+    renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+    renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+    renderer.outputColorSpace=THREE.SRGBColorSpace;
+    renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.15;
+    host.appendChild(renderer.domElement);
+    controls=new THREE.OrbitControls(camera,renderer.domElement);
+    controls.target.set(0,0,0); controls.enableDamping=true; controls.dampingFactor=.08;
+    controls.minDistance=6; controls.maxDistance=22; controls.maxPolarAngle=Math.PI*.48;
+    scene.add(new THREE.HemisphereLight(0xfff9ed,0x68705c,2));
+    const key=new THREE.DirectionalLight(0xfff5df,3.1); key.position.set(-4,10,6); key.castShadow=true;
+    key.shadow.mapSize.set(1024,1024); key.shadow.camera.left=-9; key.shadow.camera.right=9;
+    key.shadow.camera.top=9; key.shadow.camera.bottom=-9; key.shadow.bias=-.0003; scene.add(key);
+    const fill=new THREE.DirectionalLight(0xdce9f1,1.1); fill.position.set(7,5,-5); scene.add(fill);
+    const floor=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:"#efede5",roughness:1}));
+    floor.rotation.x=-Math.PI/2; floor.position.y=-.35; floor.receiveShadow=true; scene.add(floor);
+    boardGroup=new THREE.Group(); scene.add(boardGroup);
+    const resize=()=>{
+      const w=host.clientWidth, h=host.clientHeight;
+      if(!w||!h)return;
+      renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix();
+    };
+    new ResizeObserver(resize).observe(host); resize();
+    renderer.setAnimationLoop(()=>{controls.update();renderer.render(scene,camera);});
+    renderThreePattern();
+  }
+
+  function makeFabricTexture() {
+    const canvas=document.createElement("canvas"); canvas.width=128; canvas.height=128;
+    const ctx=canvas.getContext("2d"); ctx.fillStyle="#e6ddc9"; ctx.fillRect(0,0,128,128);
+    for(let i=0;i<2600;i++){
+      const x=Math.random()*128,y=Math.random()*128;
+      ctx.fillStyle=Math.random()>.5?"rgba(255,255,255,.12)":"rgba(117,100,72,.055)";
+      ctx.fillRect(x,y,1,1);
+    }
+    ctx.strokeStyle="rgba(129,111,83,.10)"; ctx.lineWidth=.5;
+    for(let i=0;i<=128;i+=4){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,128);ctx.stroke();ctx.beginPath();ctx.moveTo(0,i);ctx.lineTo(128,i);ctx.stroke();}
+    const tex=new THREE.CanvasTexture(canvas); tex.wrapS=tex.wrapT=THREE.RepeatWrapping; tex.repeat.set(3,3); tex.colorSpace=THREE.SRGBColorSpace;
+    return tex;
+  }
+
+  function renderThreePattern() {
+    if(!scene || !boardGroup)return;
+    while(boardGroup.children.length) {
+      const child=boardGroup.children.pop();
+      child.traverse?.(o=>{o.geometry?.dispose?.(); if(o.material){if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material.dispose();}});
+    }
+    const cell=6.5/size, extent=size*cell;
+    const backing=new THREE.Mesh(new THREE.BoxGeometry(extent+.30,.22,extent+.30),new THREE.MeshStandardMaterial({color:"#b8a98e",roughness:.78}));
+    backing.position.y=-.13; backing.castShadow=true; backing.receiveShadow=true; boardGroup.add(backing);
+    const cloth=new THREE.Mesh(new THREE.BoxGeometry(extent,.035,extent),new THREE.MeshStandardMaterial({map:makeFabricTexture(),color:"#f0e8d7",roughness:1}));
+    cloth.position.y=-.005; cloth.receiveShadow=true; boardGroup.add(cloth);
+    const frameMat=new THREE.MeshStandardMaterial({color:"#d6c9ae",roughness:.65});
+    for(const [x,z,w,d] of [[0,-extent/2-.08,extent+.34,.11],[0,extent/2+.08,extent+.34,.11],[-extent/2-.08,0,.11,extent+.17],[extent/2+.08,0,.11,extent+.17]]){
+      const rail=new THREE.Mesh(new THREE.BoxGeometry(w,.12,d),frameMat); rail.position.set(x,-.105,z); rail.castShadow=true; boardGroup.add(rail);
+    }
+    const gridPositions=[];
+    for(let i=0;i<=size;i++){
+      const t=-extent/2+i*cell;
+      gridPositions.push(-extent/2,.018,t,extent/2,.018,t);
+      gridPositions.push(t,.018,-extent/2,t,.018,extent/2);
+    }
+    const gridGeo=new THREE.BufferGeometry();
+    gridGeo.setAttribute("position",new THREE.Float32BufferAttribute(gridPositions,3));
+    const gridMat=new THREE.LineBasicMaterial({color:"#9d927e",transparent:true,opacity:.25});
+    gridObject=new THREE.LineSegments(gridGeo,gridMat); gridObject.visible=showGrid; boardGroup.add(gridObject);
+    stitchGroup=new THREE.Group();
+    const boxGeo=new THREE.BoxGeometry(cell*.76,.035,cell*.105);
+    const byColor={};
+    usedColors().forEach(i=>byColor[i]=[]);
+    const all=pattern.flatMap((row,r)=>row.map((v,c)=>({v,r,c})).filter(o=>o.v>=0));
+    const visibleCount=Math.floor(all.length*reveal/100);
+    all.slice(0,visibleCount).forEach(({v,r,c})=>{
+      const x=(c-(size-1)/2)*cell, z=(r-(size-1)/2)*cell;
+      byColor[v].push({x,z,rot:Math.PI/4});
+      byColor[v].push({x,z,rot:-Math.PI/4});
+    });
+    Object.entries(byColor).forEach(([idx,items])=>{
+      if(!items.length)return;
+      const mesh=new THREE.InstancedMesh(boxGeo,new THREE.MeshStandardMaterial({color:colors[idx].hex,roughness:.58,metalness:.02}),items.length);
+      mesh.castShadow=true; mesh.receiveShadow=true;
+      const dummy=new THREE.Object3D();
+      items.forEach((p,i)=>{dummy.position.set(p.x,.045,p.z);dummy.rotation.set(0,p.rot,0);dummy.updateMatrix();mesh.setMatrixAt(i,dummy.matrix);});
+      mesh.instanceMatrix.needsUpdate=true; stitchGroup.add(mesh);
+    });
+    stitchGroup.visible=showStitches; boardGroup.add(stitchGroup);
+    boardGroup.rotation.y=0;
+  }
+
+  function updateProgress() {
+    $("progressText").textContent=`${Math.round(progress)} %`;
+    $("progressFill").style.width=`${progress}%`;
+    $("statusLine").textContent=progress>=100?"Projet terminé — bravo pour chaque point !":progress>0?`${Math.round(progress*countStitches()/100)} points brodés · vous avancez à votre rythme.`:"Patron prêt à être brodé.";
+  }
+  function setStep(index) {
+    document.querySelectorAll(".step").forEach((step,i)=>{
+      step.classList.toggle("active",i===index);
+      step.classList.toggle("done",i<index);
+    });
+  }
+  function runAnalysis() {
+    if(analysisBusy)return;
+    analysisBusy=true; setStep(1);
+    $("analyzeBtn").textContent="◌  Analyse en cours…";
+    $("statusLine").textContent="Analyse des formes, de la grille et des couleurs…";
+    setTimeout(()=>{
+      analysisBusy=false; $("analyzeBtn").innerHTML="✧ &nbsp; Analyser la source";
+      setStep(2); $("statusLine").textContent="Source reconstruite en grille — couleurs et fils identifiés.";
+      toast("Votre source a été reconstruite en patron éditable.");
+      setTimeout(()=>setStep(3),800);
+    },1300);
+  }
+
+  document.querySelectorAll(".mini-card").forEach(btn=>btn.addEventListener("click",()=>{
+    document.querySelectorAll(".mini-card").forEach(b=>b.classList.remove("selected"));
+    btn.classList.add("selected"); type=btn.dataset.pattern; pattern=buildPattern(type,size); progress=0;
+    $("revealRange").value=100; reveal=100; $("revealValue").textContent="100%";
+    updateDetails(); setStep(2); $("saveState").textContent="Modèle chargé";
+    toast(`${names[type]} ajouté à votre atelier.`);
+  }));
+  $("sizeSelect").addEventListener("change",e=>{size=+e.target.value;pattern=buildPattern(type,size);progress=0;updateDetails();toast(`Grille ajustée : ${size} × ${size} points.`);});
+  $("analyzeBtn").addEventListener("click",runAnalysis);
+  $("createPrompt").addEventListener("click",()=>{
+    const text=$("promptInput").value.trim();
+    if(!text){toast("Décrivez votre idée pour créer un patron.");$("promptInput").focus();return;}
+    const t=text.toLowerCase();
+    type=t.includes("lune")||t.includes("étoile")?"moon":t.includes("fleur")||t.includes("mimosa")||t.includes("rose")?"flower":"heart";
+    document.querySelectorAll(".mini-card").forEach(b=>b.classList.toggle("selected",b.dataset.pattern===type));
+    pattern=buildPattern(type,size);progress=0;updateDetails();setStep(0);
+    $("saveState").textContent="Idée transformée en patron";
+    toast("Votre idée a pris forme en grille. Vous pouvez maintenant l’analyser.");
+  });
+  $("fileInput").addEventListener("change",e=>{
+    const file=e.target.files[0]; if(!file)return;
+    $("fileName").textContent=`✓ ${file.name}`;
+    $("saveState").textContent="Source importée";
+    if(file.type.startsWith("image/")){
+      const reader=new FileReader();
+      reader.onload=()=>{const img=new Image();img.onload=()=>{toast("Image importée — prête pour l’analyse.");};img.src=reader.result;};
+      reader.readAsDataURL(file);
+    } else toast("Fichier importé — prêt pour l’analyse.");
+    setStep(0);
+  });
+  const dropZone=$("dropZone");
+  ["dragenter","dragover"].forEach(event=>dropZone.addEventListener(event,e=>{e.preventDefault();dropZone.classList.add("dragging");}));
+  ["dragleave","drop"].forEach(event=>dropZone.addEventListener(event,e=>{e.preventDefault();dropZone.classList.remove("dragging");}));
+  dropZone.addEventListener("drop",e=>{const f=e.dataTransfer.files[0];if(!f)return;$("fileName").textContent=`✓ ${f.name}`;$("saveState").textContent="Source importée";toast("Source importée — lancez l’analyse.");});
+  $("revealRange").addEventListener("input",e=>{
+    reveal=+e.target.value; $("revealValue").textContent=`${reveal}%`; renderThreePattern();
+    setStep(3);
+  });
+  $("gridToggle").addEventListener("click",e=>{showGrid=!showGrid;e.currentTarget.classList.toggle("active",showGrid);if(gridObject)gridObject.visible=showGrid;});
+  $("stitchToggle").addEventListener("click",e=>{showStitches=!showStitches;e.currentTarget.classList.toggle("active",showStitches);if(stitchGroup)stitchGroup.visible=showStitches;});
+  $("view3d").addEventListener("click",()=>{
+    $("view3d").classList.add("active");$("viewFlat").classList.remove("active");
+    camera.position.set(8,8.5,10);controls.maxPolarAngle=Math.PI*.48;controls.update();
+  });
+  $("viewFlat").addEventListener("click",()=>{
+    $("viewFlat").classList.add("active");$("view3d").classList.remove("active");
+    camera.position.set(0,13,0.01);controls.maxPolarAngle=Math.PI;controls.update();
+  });
+  $("resetCamera").addEventListener("click",()=>{camera.position.set(8,8.5,10);controls.target.set(0,0,0);controls.update();});
+  $("stitchBtn").addEventListener("click",()=>{
+    if(timer){clearInterval(timer);timer=null;$("stitchBtn").innerHTML="▶ &nbsp; Reprendre";toast("Pause — votre progression est conservée.");return;}
+    if(progress>=100)progress=0;
+    setStep(5);$("stitchBtn").innerHTML="Ⅱ &nbsp; Pause";
+    timer=setInterval(()=>{
+      progress=Math.min(100,progress+.18); updateProgress();
+      if(progress>=100){clearInterval(timer);timer=null;$("stitchBtn").innerHTML="✓ &nbsp; Terminé";setStep(7);toast("Patron terminé. Quelle belle broderie !");}
+    },120);
+  });
+  $("validateBtn").addEventListener("click",()=>{
+    setStep(4);$("statusLine").textContent="Patron validé — vous pouvez commencer à broder.";
+    $("modalTitle").textContent="Patron validé ✦";
+    $("modalText").textContent=`Votre grille de ${countStitches()} points est prête, avec ${usedColors().length} coloris repérés. Votre toile estimée : ${$("fabricSize").textContent} cm. Vérifiez vos fils avant de commencer.`;
+    $("modalBackdrop").classList.add("show");
+  });
+  $("closeModal").addEventListener("click",()=>$("modalBackdrop").classList.remove("show"));
+  $("modalConfirm").addEventListener("click",()=>{$("modalBackdrop").classList.remove("show");setStep(5);toast("À vous de jouer — belle broderie !");});
+  $("infoBtn").addEventListener("click",()=>{
+    $("modalTitle").textContent="Votre fiche projet";
+    $("modalText").textContent=`${names[type]} · ${size} × ${size} points · ${countStitches()} croix · toile Aïda 14 ct. Estimation : ${$("timeEstimate").textContent}. Les quantités de fil sont indicatives et calculées selon la palette sélectionnée.`;
+    $("modalBackdrop").classList.add("show");
+  });
+  $("newProject").addEventListener("click",()=>{
+    $("promptInput").value="";$("fileName").textContent="";progress=0;type="heart";
+    pattern=buildPattern(type,size);updateDetails();setStep(0);$("saveState").textContent="Nouveau projet";
+    toast("Un nouveau projet vous attend.");
+  });
+  $("exportBtn").addEventListener("click",()=>{
+    const data={project:names[type],size:`${size}x${size}`,stitches:countStitches(),palette:usedColors().map(i=>({name:colors[i].name,code:colors[i].code,hex:colors[i].hex})),grid:pattern,progress:Math.round(progress)};
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+    const link=document.createElement("a");link.href=URL.createObjectURL(blob);link.download=`${names[type].toLowerCase().replaceAll(" ","-")}-patron.json`;link.click();URL.revokeObjectURL(link.href);
+    toast("Patron numérique exporté.");
+  });
+  document.querySelectorAll(".step").forEach(el=>el.addEventListener("click",()=>{
+    const i=+el.dataset.step;setStep(i);
+    if(i===4){$("validateBtn").click();}
+    else if(i===5||i===6){$("statusLine").textContent=i===5?"Prête à broder — commencez quand vous le souhaitez.":"Suivez votre avancée avec le bouton de broderie.";}
+    else if(i===7&&progress<100)toast("Terminez vos points pour célébrer votre ouvrage.");
+  }));
+
+  pattern=buildPattern(type,size);
+  initThree();
+  updateDetails();
+})();
+</script>
+</body>
+</html>
