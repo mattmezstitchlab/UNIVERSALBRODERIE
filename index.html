@@ -451,14 +451,14 @@
   <header class="topbar">
     <div class="brand">
       <div class="brand-mark">✳</div>
-      <div><div class="brand-name">L’Atelier Universel</div><div class="brand-sub">DE BRODERIE</div></div>
+      <div><div class="brand-name">MAYA</div><div class="brand-sub">ATELIER UNIVERSEL DE BRODERIE</div></div>
     </div>
     <div class="top-center">
       <div class="project-name" id="projectName"></div>
       <div class="save-state" id="saveState">Chargement du patron…</div>
     </div>
     <div class="top-actions">
-      <button class="button small" id="newProject" type="button">＋ Nouveau</button>
+      <button class="button small" id="mayaBtn" type="button">MAYA · Image → patron</button><button class="button small" id="newProject" type="button">＋ Nouveau</button>
       <button class="button small" id="printBtn" type="button">▤ Fiche</button>
       <button class="button primary small" id="exportBtn" type="button">⇩ Exporter JSON</button>
     </div>
@@ -499,6 +499,8 @@
           <label class="field"><span class="field-label">Droite</span><input id="marginRight" type="number" min="0" max="100" step="0.1"></label>
         </div>
         <p class="small-caption">Valeur initiale : 5 cm par côté, à confirmer selon le montage. Dimensions de toile = motif + ces marges.</p>
+        <div class="divider"></div>
+        <button class="button inline-action" id="mayaImportBtn" type="button">MAYA · Transformer une image en patron</button><p class="small-caption">Conversion locale, grille éditable, maximum 200 × 200 points.</p>
         <div class="divider"></div>
         <label class="source-drop" id="dropZone" for="fileInput">
           <div class="upload-icon">↑</div><strong>Réimporter un patron JSON</strong>
