@@ -1,6 +1,6 @@
-# L’Atelier Universel de Broderie
+# MAYA — Atelier universel de broderie
 
-Un **atelier de point de croix** : patron éditable, grille symbolisée, suivi réel de la broderie, aperçu 3D illustratif, fiche A4 et JSON autonome. La phase 2 **enrichit** la phase 1 ; elle ne remplace ni ses trois générateurs, ni sa 3D, ni ses mesures, ni sa persistance.
+**MAYA** est un atelier de point de croix : patron éditable, grille symbolisée, suivi réel de la broderie, aperçu 3D illustratif, fiche A4, JSON autonome et conversion locale **image → patron**.\n\n> **Transformez une image en histoire à broder.**\n\nLe moteur image → patron est local et déterministe : image → quantification → palette → grille. Il respecte la borne actuelle de **200 × 200 points** et produit un patron entièrement éditable. Les références DMC historiques restent **À CONFIRMER** tant qu’une source fabricant n’a pas été enregistrée. La phase 2 **enrichit** la phase 1 ; elle ne remplace ni ses trois générateurs, ni sa 3D, ni ses mesures, ni sa persistance.
 
 ## Démarrer
 
