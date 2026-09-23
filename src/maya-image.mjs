@@ -36,7 +36,8 @@ function readImage(file) {
 
 function projectFromImage(image, options) {
   const size = fitted(image.naturalWidth || image.width, image.naturalHeight || image.height, options.width);
-  const count = clamp(Number(options.maxColors) || 7, 1, BASE_PALETTE.length);
+  const requestedColors = Number(options.maxColors) || 36;
+  const count = clamp(requestedColors, 1, BASE_PALETTE.length);
   const canvas = document.createElement("canvas");
   canvas.width = size.width; canvas.height = size.height;
   const ctx = canvas.getContext("2d", { willReadFrequently: true });
@@ -57,10 +58,17 @@ function projectFromImage(image, options) {
     .sort((a,b)=>b[1]-a[1])
     .slice(0, Math.min(256, frequency.size))
     .map(([key])=>key.split(",").map(Number));
-  const paletteScores = BASE_PALETTE.map(thread => ({
-    thread,
-    score: candidates.reduce((sum,pixel)=>sum + Math.min(dist(pixel,rgb(thread.color)), 255*255*3), 0)
-  })).sort((a,b)=>a.score-b.score);
+  // Rapprochement contre tout le catalogue DMC, puis sélection des fils réellement
+  // présents dans l'image. Cela évite qu'une petite palette prototype domine le résultat.
+  const usage = new Map();
+  for (const pixel of candidates) {
+    const t = nearest(pixel, BASE_PALETTE);
+    usage.set(t.threadId, (usage.get(t.threadId) || 0) + 1);
+  }
+  const paletteScores = Array.from(usage.keys())
+    .map(threadId => ({ thread: BASE_PALETTE.find(t => t.threadId === threadId), score: usage.get(threadId) }))
+    .filter(x => x.thread)
+    .sort((a,b) => b.score - a.score);
   const palette = paletteScores.slice(0,count).map(({thread})=>({...thread}));
   const grid = Array.from({length:size.height}, () => Array(size.width).fill(null));
   const counts = {};
@@ -81,7 +89,7 @@ function projectFromImage(image, options) {
     palette,grid,
     extensions:{maya:{sourceFileName:options.fileName,sourceType:"image",
       algorithm:"RGB nearest-colour mapping, local and deterministic",
-      maxColors:count,requestedWidth:size.width,countsByThread:counts,paletteStatus:"DMC references inherited from prototype and À CONFIRMER",
+      maxColors:count,requestedWidth:size.width,countsByThread:counts,paletteStatus:"Catalogue DMC local complet utilisé pour le rapprochement ; correspondances physiques À CONFIRMER",
       createdAt:new Date().toISOString()}}
   };
 }
@@ -92,7 +100,7 @@ export function mountMayaImport() {
   if (document.getElementById("mayaPanel")) return;
   const style=document.createElement("style"); style.textContent=css; document.head.appendChild(style);
   const panel=document.createElement("div"); panel.id="mayaPanel"; panel.className="maya-panel"; panel.hidden=true;
-  panel.innerHTML='<section class="maya-card" role="dialog" aria-modal="true"><div class="maya-head"><div><div class="maya-kicker">MAYA · Atelier universel de broderie</div><h2 class="maya-title">Image → patron</h2><div class="maya-sub">Transformez une image en grille éditable. Le calcul reste local et déterministe.</div></div><button class="maya-close" id="mayaClose">×</button></div><label class="maya-drop" id="mayaDrop" for="mayaFile"><strong>Déposer une image ici</strong><span>JPG, JPEG, PNG ou WEBP · maximum 20 Mo</span></label><input id="mayaFile" type="file" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" hidden><div class="maya-preview" id="mayaPreview" hidden><canvas id="mayaCanvas" width="180" height="180"></canvas><div class="maya-fields"><label>Nom du patron<input id="mayaName" maxlength="100" value="MAYA — image"></label><label>Largeur du patron<select id="mayaWidth"><option value="24">24 points</option><option value="36" selected>36 points</option><option value="48">48 points</option><option value="72">72 points</option><option value="100">100 points</option><option value="150">150 points</option><option value="200">200 points</option></select></label><label>Couleurs maximum<select id="mayaColors">'+BASE_PALETTE.map((_,i)=>'<option value="'+(i+1)+'" '+(i===6?'selected':'')+'>'+(i+1)+'</option>').join("")+'</select></label><label>Transparence<select id="mayaTransparent"><option value="empty">Transparent = vide</option><option value="white">Transparent = blanc</option></select></label><div class="maya-meta" id="mayaMeta"></div></div></div><div class="maya-actions"><button id="mayaCancel">Annuler</button><button id="mayaCreate" class="primary" disabled>Créer le patron</button></div><p class="maya-note">Les références DMC historiques restent « À CONFIRMER ». MAYA ne prétend pas vérifier une correspondance fabricant.</p></section>';
+  panel.innerHTML='<section class="maya-card" role="dialog" aria-modal="true"><div class="maya-head"><div><div class="maya-kicker">MAYA · Atelier universel de broderie</div><h2 class="maya-title">Image → patron</h2><div class="maya-sub">Transformez une image en grille éditable. Le calcul reste local et déterministe.</div></div><button class="maya-close" id="mayaClose">×</button></div><label class="maya-drop" id="mayaDrop" for="mayaFile"><strong>Déposer une image ici</strong><span>JPG, JPEG, PNG ou WEBP · maximum 20 Mo</span></label><input id="mayaFile" type="file" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" hidden><div class="maya-preview" id="mayaPreview" hidden><canvas id="mayaCanvas" width="180" height="180"></canvas><div class="maya-fields"><label>Nom du patron<input id="mayaName" maxlength="100" value="MAYA — image"></label><label>Largeur du patron<select id="mayaWidth"><option value="24">24 points</option><option value="36" selected>36 points</option><option value="48">48 points</option><option value="72">72 points</option><option value="100">100 points</option><option value="150">150 points</option><option value="200">200 points</option></select></label><label>Couleurs maximum<select id="mayaColors"><option value="24" >24</option><option value="36" selected>36</option><option value="48" >48</option><option value="72" >72</option><option value="100" >100</option><option value="150" >150</option><option value="200" >200</option></select></label><label>Transparence<select id="mayaTransparent"><option value="empty">Transparent = vide</option><option value="white">Transparent = blanc</option></select></label><div class="maya-meta" id="mayaMeta"></div></div></div><div class="maya-actions"><button id="mayaCancel">Annuler</button><button id="mayaCreate" class="primary" disabled>Créer le patron</button></div><p class="maya-note">Les références DMC historiques restent « À CONFIRMER ». MAYA ne prétend pas vérifier une correspondance fabricant.</p></section>';
   document.body.appendChild(panel);
   const fileInput=panel.querySelector("#mayaFile"), drop=panel.querySelector("#mayaDrop"), preview=panel.querySelector("#mayaPreview");
   const canvas=panel.querySelector("#mayaCanvas"), meta=panel.querySelector("#mayaMeta"), create=panel.querySelector("#mayaCreate");

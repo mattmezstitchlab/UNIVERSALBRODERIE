@@ -1,4 +1,5 @@
 import { clearProgressAt, pruneProgress } from './progress.mjs';
+import { DMC_PALETTE } from './dmc-palette.mjs';
 
 // Une cellule du patron correspond à une position de point de croix sur la toile.
 // Les indices de tableau sont (ligne, colonne), à partir de zéro, depuis le coin haut gauche.
@@ -13,19 +14,10 @@ export const TEMPLATES = Object.freeze({
   moon: { name: 'Jardin de lune', icon: '☾' }
 });
 
-// Références reprises du prototype, SANS vérification auprès du fabricant.
-// Leur statut est délibérément explicite dans les données, la légende et le JSON.
-export const BASE_PALETTE = Object.freeze([
-  { threadId: 'thread-001', name: 'Rouge garance', reference: 'DMC 321', color: '#b8434d', symbol: '●' },
-  { threadId: 'thread-002', name: 'Rose poudré', reference: 'DMC 3716', color: '#e89a9d', symbol: '◆' },
-  { threadId: 'thread-003', name: 'Rose clair', reference: 'DMC 818', color: '#f2c6c5', symbol: '▲' },
-  { threadId: 'thread-004', name: 'Vert sauge', reference: 'DMC 524', color: '#8ca58b', symbol: '✚' },
-  { threadId: 'thread-005', name: 'Vert profond', reference: 'DMC 3051', color: '#536b55', symbol: '■' },
-  { threadId: 'thread-006', name: 'Miel doré', reference: 'DMC 725', color: '#d8a94e', symbol: '✦' },
-  { threadId: 'thread-007', name: 'Crème', reference: 'DMC 712', color: '#eadcb8', symbol: '◇' }
-].map(thread => Object.freeze({ ...thread,
-  brand: 'DMC', code: thread.reference.slice(4), source: null, verifiedAt: null,
-  referenceStatus: 'À CONFIRMER' })));
+// Palette complète de références DMC disponibles pour le moteur d'import image.
+// Les valeurs sont destinées au rendu écran et au calcul de proximité ; elles restent À CONFIRMER
+// comme correspondance physique fabricant.
+export const BASE_PALETTE = DMC_PALETTE;
 
 const cross = index => ({ threadId: BASE_PALETTE[index].threadId, stitchType: 'cross' });
 
