@@ -16,6 +16,7 @@ export const runtimeFiles = Object.freeze([
   'src/grid-view.mjs',
   'src/history.mjs',
   'src/io.mjs',
+  'src/maya-image.mjs',
   'src/progress.mjs',
   'src/project.mjs',
   'src/sheet.mjs',
@@ -32,10 +33,10 @@ export const runtimeFiles = Object.freeze([
 const paths = new Set(runtimeFiles);
 for (const file of runtimeFiles.filter(name => /\.(mjs|js)$/.test(name))) {
   const source = await readFile(join(root, file), 'utf8');
-  for (const [, specifier] of source.matchAll(/\b(?:import|export)\s+(?:[^'";]*?\s+from\s*)?['"]([^'"]+)['"]/g)) {
+  for (const [, specifier] of source.matchAll(/\b(?:import|export)\s+(?:[^'\";]*?\s+from\s*)?['\"]([^'\"]+)['\"]/g)) {
     if (!specifier.startsWith('.')) continue; // « three » est résolu par l'import map HTML.
     const dependency = normalize(join(dirname(file), specifier));
-    if (!paths.has(dependency)) throw new Error(`Import ${specifier} de ${file} absent du déploiement : ${dependency}`);
+    if (!paths.has(dependency)) throw new Error('Import ' + specifier + ' de ' + file + ' absent du déploiement : ' + dependency);
   }
 }
 
@@ -44,4 +45,4 @@ for (const file of runtimeFiles) {
   await mkdir(dirname(join(output, file)), { recursive: true });
   await cp(join(root, file), join(output, file));
 }
-console.log(`Site statique prêt dans dist/ (${runtimeFiles.length} fichiers, aucun serveur requis).`);
+console.log('Site statique prêt dans dist/ (' + runtimeFiles.length + ' fichiers, aucun serveur requis).');
