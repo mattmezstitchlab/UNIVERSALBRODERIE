@@ -17,6 +17,7 @@ export const runtimeFiles = Object.freeze([
   'src/history.mjs',
   'src/io.mjs',
   'src/maya-image.mjs',
+  'src/dmc-palette.mjs',
   'src/progress.mjs',
   'src/project.mjs',
   'src/sheet.mjs',
