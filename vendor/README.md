@@ -1,0 +1,1 @@
+Three.js 0.152.2 (three.module.min.js) et son OrbitControls.js, copiés sans modification depuis le paquet npm officiel `three@0.152.2` (build/ et examples/jsm/controls/). Licence MIT dans LICENSE. Fichiers servis localement : aucun CDN ni construction du projet n'est nécessaire. L'import `three` dans OrbitControls est résolu par l'import map de index.html.

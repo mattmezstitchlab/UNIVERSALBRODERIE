@@ -259,483 +259,305 @@
       .scene-controls { gap:3px; }
       .scene-control { min-width:30px; }
     }
+
+    /* Extensions de l'atelier : même mise en page et palette, grille de données au centre. */
+    .layout { grid-template-columns:294px minmax(400px,1fr) 310px; align-items:start; }
+    .center-panel { position:sticky; top:16px; height:min(800px, calc(100vh - 170px)); min-height:570px; }
+    .left-panel { display:flex; flex-direction:column; gap:0; }
+    .field { display:block; margin:10px 0; }
+    .field-label { display:block; color:#788678; font-size:10px; margin-bottom:5px; }
+    .field input, .field select, .field-control {
+      width:100%; border:1px solid #e6e7dd; border-radius:7px; background:#fffefa;
+      padding:8px 9px; color:var(--ink); outline:none; font-size:11px;
+    }
+    .field input:focus, .field select:focus { border-color:#7a9a7e; box-shadow:0 0 0 2px #eaf0e9; }
+    .field-row { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+    .field-row .field { margin:6px 0; }
+    .small-caption { color:#92988f; font-size:9px; line-height:1.5; margin:4px 0 8px; }
+    .inline-action { width:100%; justify-content:center; font-size:10px; margin-top:7px; }
+    .source-drop { display:block; margin-top:7px; padding:13px 10px; }
+    .source-drop strong { margin-bottom:2px; }
+    .source-drop span { font-size:9px; }
+    .source-drop .upload-icon { margin-bottom:5px; height:30px; width:30px; }
+    .input-error { color:#a45743; background:#fbefea; border-radius:7px; padding:9px;
+      font-size:10px; line-height:1.5; overflow-wrap:anywhere; }
+    .input-error[hidden] { display:none; }
+    .project-name-input { font-family:Georgia,serif; font-size:16px; }
+    .save-state.problem:before { background:#c97c61; }
+    .work-intro { display:flex; justify-content:space-between; align-items:center; gap:10px;
+      color:#7f8d80; font-size:11px; margin:0 2px 18px; }
+    .work-intro strong { color:var(--green); font-weight:600; }
+    .status-chip { background:#e8f0e7; border:1px solid #d6e4d3; color:#406a4b;
+      border-radius:30px; padding:6px 10px; font-size:10px; white-space:nowrap; }
+    .status-chip.invalid { background:#fbefea; border-color:#efd7ce; color:#9c5542; }
+    .grid-view { position:absolute; inset:0; background:#f1efe7; padding:100px 15px 55px; overflow:auto; }
+    .grid-view[hidden], #scene canvas[hidden] { display:none !important; }
+    .grid-view svg { display:block; margin:0 auto; background:#fffefa;
+      border:1px solid #e8e5d9; border-radius:4px; box-shadow:0 10px 28px rgba(42,51,43,.08); }
+    .grid-view svg:focus-visible { outline:2px solid #567b60; }
+    .grid-cell { stroke:#b9b5a6; stroke-width:.7; }
+    .chart.no-lines .grid-cell { stroke:transparent; }
+    .chart [role="gridcell"] { cursor:crosshair; }
+    .chart [role="gridcell"]:hover .grid-cell { stroke:#314f3e; stroke-width:2; }
+    .grid-symbol { font-weight:700; font-family:Arial,sans-serif; }
+    .axis-label { font-size:10px; fill:#607164; font-family:Inter,Arial,sans-serif; }
+    .major-lines line { stroke:#766f60; stroke-width:1.3; }
+    .cell-selection { fill:none; stroke:#244f36; stroke-width:2.5; }
+    .grid-edit-bar { position:absolute; z-index:3; top:57px; left:17px; right:17px;
+      display:flex; align-items:center; gap:6px; padding:5px 7px; border:1px solid #e3e1d8;
+      border-radius:8px; background:rgba(255,254,250,.96); box-shadow:0 4px 12px rgba(42,51,43,.06); }
+    .grid-edit-bar[hidden] { display:none !important; }
+    .grid-edit-bar > span { color:#7c8b7d; font-size:10px; }
+    .grid-edit-bar select { min-width:0; flex:1; border:1px solid #e9e7df; border-radius:6px;
+      background:white; color:var(--ink); font-size:10px; height:28px; padding:0 5px; }
+    .grid-edit-bar #stitchType { flex:0 0 118px; }
+    .grid-edit-bar button { border:1px solid #e9e7df; background:white; border-radius:6px;
+      height:28px; padding:0 8px; cursor:pointer; font-size:10px; white-space:nowrap; }
+    .grid-actions { position:absolute; right:16px; top:103px; z-index:3; display:flex; gap:4px; }
+    .grid-actions[hidden] { display:none !important; }
+    .grid-actions button { height:27px; min-width:26px; padding:0 6px; border:1px solid #e2e0d6;
+      border-radius:6px; background:rgba(255,254,250,.95); cursor:pointer; }
+    .scene-hint { max-width:65%; overflow:hidden; text-overflow:ellipsis; }
+    .scene-badge { max-width:58%; }
+    .view-toolbar { align-items:center; }
+    .stat.wide { grid-column:1/-1; }
+    .stat.wide strong { font-size:16px; }
+    .stats-grid { margin-bottom:10px; }
+    .surface-note { color:#848d80; font-size:10px; line-height:1.65; margin-bottom:15px; }
+    .thread-row { grid-template-columns:19px minmax(0,1fr) auto; gap:7px; padding:7px 6px;
+      border:1px solid #efeee8; border-radius:8px; }
+    .thread-row.active { border-color:#739279; background:#f1f6ef; }
+    .thread-symbol { display:grid; place-items:center; width:18px; height:18px; font-size:13px;
+      color:#24342d; border:1px solid #d8d9cf; border-radius:4px; background:#fffefa; }
+    .thread-info small { font-size:8px; line-height:1.45; }
+    .thread-quantity { font-weight:650; font-size:10px; }
+    .thread-quantity span { display:block; font-weight:400; color:#979d94; font-size:8px; }
+    .thread-list { gap:5px; }
+    .selection-info { margin:15px 0 3px; background:#f5f4ed; color:#586b59; border-radius:8px;
+      padding:9px; font-size:10px; line-height:1.5; }
+    .validation-box { margin-top:14px; border-top:1px solid #eeece5; padding-top:12px; }
+    .validation-box strong { font-size:10px; }
+    .validation-box p { margin:5px 0 0; color:#7d877c; font-size:9px; line-height:1.55; }
+    .validation-box.invalid strong { color:#a45a49; }
+    .reveal-section { margin-top:auto; padding-top:12px; }
+    .reveal-section .range-row { margin-top:7px; }
+    .status-line { line-height:1.5; min-height:0; }
+    .bottom-note { line-height:1.5; }
+    .button:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+    #eraseTool.active { color:white; background:var(--green); border-color:var(--green); }
+    @media(max-width:1100px) {
+      .layout { grid-template-columns:270px minmax(360px,1fr); }
+      .right-panel { display:flex; grid-column:1/-1; }
+    }
+    @media(max-width:720px) {
+      .topbar { height:auto; min-height:64px; padding:10px 15px; flex-wrap:wrap; }
+      .top-center { display:flex; order:3; width:100%; justify-content:flex-end; }
+      .top-center .project-name { display:none; }
+      .save-state { font-size:9px; }
+      .top-actions { gap:4px; }
+      .top-actions .button:not(.primary) { display:inline-flex; }
+      .top-actions .button { padding:8px; font-size:9px; }
+      .layout { display:flex; flex-direction:column; }
+      .center-panel { position:relative; top:auto; height:455px; min-height:455px; width:100%; }
+      .right-panel { display:flex; }
+      .work-intro { font-size:9px; }
+      .grid-view { padding:96px 8px 54px; }
+      .grid-edit-bar { top:56px; left:8px; right:8px; gap:4px; padding:4px; }
+      .grid-edit-bar #stitchType { flex:0 0 76px; }
+      .grid-edit-bar .erase-label { display:none; }
+      .grid-actions { top:98px; right:8px; }
+      .scene-badge { font-size:9px; }
+      .scene-hint { display:none; }
+    }
+    @media(max-width:390px) { .topbar { gap:8px; } .brand-mark { display:none; } }
+    /* Phase 2 : outils du patron et suivi distinct de la réalisation. */
+    .intro-actions { display:flex; align-items:center; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
+    .intro-actions button, .coordinate-nav button, .region-actions button, .reading-inputs button {
+      border:1px solid #dfe6db; background:#fffefa; color:#3b6348; border-radius:7px;
+      padding:6px 8px; font-size:10px; cursor:pointer;
+    }
+    button:disabled { opacity:.5; cursor:not-allowed; }
+    .grid-view { padding-top:157px; }
+    .grid-view.pan-active { touch-action:none; }
+    .grid-view .chart .cell-muted { opacity:.19; }
+    .grid-view .chart .cell-focused .grid-cell { stroke:#143b2d; stroke-width:1.8; }
+    .grid-view .chart .cell-outside-reading { opacity:.13; }
+    .grid-view .chart .cell-done .grid-cell { stroke:#1d7050; stroke-width:2; }
+    .grid-view .chart .cell-in-progress .grid-cell { stroke:#b57824; stroke-width:2; stroke-dasharray:3 2; }
+    .region-selection { fill:rgba(67,120,87,.12); stroke:#285c3c; stroke-width:2.5; stroke-dasharray:5 3; }
+    .drag-preview { fill:rgba(56,112,69,.26); pointer-events:none; }
+    .drag-preview.erase { fill:rgba(194,100,81,.26); }
+    .atelier-tools, .three-options { position:absolute; z-index:4; top:99px; left:17px; right:17px;
+      display:flex; align-items:center; gap:7px; padding:5px; border:1px solid #e3e1d8;
+      border-radius:8px; background:rgba(255,254,250,.97); box-shadow:0 4px 12px #2a332b12;
+      overflow-x:auto; scrollbar-width:thin; white-space:nowrap; }
+    .atelier-tools[hidden], .three-options[hidden], .atelier-tools [hidden], .three-options [hidden] { display:none !important; }
+    .tool-group { display:flex; flex-shrink:0; gap:3px; align-items:center; }
+    .tool-group button, .status-picker button { border:1px solid transparent; border-radius:6px;
+      background:#f3f3ed; color:#546b58; padding:6px 8px; font-size:10px; cursor:pointer; white-space:nowrap; }
+    .tool-group button.active, .status-picker button.active { background:var(--green); border-color:var(--green); color:#fff; }
+    .tool-group button:focus-visible, .thread-row:focus-visible { outline:2px solid #386448; outline-offset:2px; }
+    .atelier-tools #stitchHint { color:#6b7c6e; font-size:10px; overflow:hidden; text-overflow:ellipsis; }
+    .three-options { top:59px; flex-wrap:wrap; white-space:normal; }
+    .three-options label { font-size:10px; color:#6b7c6e; white-space:nowrap; }
+    .three-options select { border:1px solid #e6e7dd; border-radius:6px; padding:5px; background:#fff; color:var(--ink); font-size:10px; }
+    .three-options span { display:block; color:#906f43; font-size:10px; white-space:normal; }
+    .center-panel.stitch-mode .atelier-tools { top:59px; }
+    .center-panel.stitch-mode .grid-view { padding-top:112px; }
+    .grid-actions { top:auto; bottom:49px; }
+    .coordinate-bar { position:absolute; z-index:3; left:17px; bottom:50px; max-width:calc(100% - 115px);
+      background:rgba(255,254,250,.92); border:1px solid #e9e7df; color:#3c6349;
+      border-radius:7px; padding:5px 9px; font-size:10px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; pointer-events:none; }
+    .clear-focus { border:0; background:#e9f2e7; color:#375c49; border-radius:6px; padding:6px 8px;
+      margin:-4px 0 8px; cursor:pointer; font-size:10px; text-align:left; }
+    .clear-focus[hidden], .region-actions[hidden] { display:none !important; }
+    .thread-row { text-align:left; width:100%; cursor:pointer; color:inherit; background:#fffefa; font:inherit; }
+    .thread-row:hover, .thread-row.focused { border-color:#4f7b5a; background:#eef5ec; }
+    .thread-row.muted { opacity:.48; }
+    .thread-quantity { text-align:right; }
+    .coordinate-nav, .region-actions, .realisation-section, .reading-section {
+      border-top:1px solid #eeece5; margin-top:13px; padding-top:12px;
+    }
+    .coordinate-nav strong, .region-actions strong, .reading-section > strong { display:block; font-size:11px; margin-bottom:8px; }
+    .coordinate-nav > div, .reading-inputs, .region-actions > div { display:flex; gap:5px; align-items:end; flex-wrap:wrap; }
+    .coordinate-nav label, .reading-inputs label { flex:1; min-width:55px; font-size:9px; color:#728173; }
+    .coordinate-nav input, .reading-inputs input { display:block; width:100%; border:1px solid #e5e7dd;
+      border-radius:6px; padding:6px; font-size:10px; color:var(--ink); }
+    .region-actions { background:#f4f7f0; border:1px solid #e2e9dc; border-radius:8px; padding:10px; }
+    .region-actions small, .reading-section small { display:block; font-size:9px; color:#818d80; line-height:1.5; margin-top:8px; }
+    .progress-counts { color:#647a69; font-size:10px; margin:9px 0; line-height:1.5; }
+    .status-picker { display:flex; gap:4px; flex-wrap:wrap; }
+    .status-picker button { flex:1; padding:7px 4px; font-size:9px; }
+    .realisation-section .small-caption { margin:9px 0 0; }
+    .reading-inputs button { padding:7px 6px; }
+    @media(max-width:1100px) { .layout { grid-template-columns:270px minmax(360px,1fr); } }
+    @media(max-width:720px) {
+      .work-intro { flex-wrap:wrap; }
+      .intro-actions { width:100%; justify-content:flex-start; }
+      .grid-view { padding:151px 8px 56px; }
+      .atelier-tools { top:95px; left:8px; right:8px; }
+      .three-options { left:8px; right:8px; }
+      .center-panel.stitch-mode .atelier-tools { top:54px; }
+      .coordinate-bar { left:8px; }
+      .grid-actions { right:8px; }
+    }
   </style>
+  <script type="importmap">
+    {"imports":{"three":"./vendor/three.module.min.js"}}
+  </script>
 </head>
 <body>
 <div class="app">
   <header class="topbar">
     <div class="brand">
       <div class="brand-mark">✳</div>
-      <div>
-        <div class="brand-name">L’Atelier Universel</div>
-        <div class="brand-sub">DE BRODERIE</div>
-      </div>
+      <div><div class="brand-name">L’Atelier Universel</div><div class="brand-sub">DE BRODERIE</div></div>
     </div>
     <div class="top-center">
-      <div class="project-name" id="projectName">Cœur sauvage</div>
-      <div class="save-state" id="saveState">Enregistré à l’instant</div>
+      <div class="project-name" id="projectName"></div>
+      <div class="save-state" id="saveState">Chargement du patron…</div>
     </div>
     <div class="top-actions">
-      <button class="button small" id="newProject">＋ Nouveau</button>
-      <button class="button primary small" id="exportBtn">⇩ &nbsp;Exporter le patron</button>
+      <button class="button small" id="newProject" type="button">＋ Nouveau</button>
+      <button class="button small" id="printBtn" type="button">▤ Fiche</button>
+      <button class="button primary small" id="exportBtn" type="button">⇩ Exporter JSON</button>
     </div>
   </header>
-
   <main class="workspace">
-    <nav class="workflow" aria-label="Étapes du projet">
-      <div class="step active" data-step="0"><span class="step-number">1</span><span>Importer / créer</span></div><div class="step-line"></div>
-      <div class="step" data-step="1"><span class="step-number">2</span><span>Analyser</span></div><div class="step-line"></div>
-      <div class="step" data-step="2"><span class="step-number">3</span><span>Reconstruire</span></div><div class="step-line"></div>
-      <div class="step" data-step="3"><span class="step-number">4</span><span>Révéler</span></div><div class="step-line"></div>
-      <div class="step" data-step="4"><span class="step-number">5</span><span>Valider</span></div><div class="step-line"></div>
-      <div class="step" data-step="5"><span class="step-number">6</span><span>Broder</span></div><div class="step-line"></div>
-      <div class="step" data-step="6"><span class="step-number">7</span><span>Suivre</span></div><div class="step-line"></div>
-      <div class="step" data-step="7"><span class="step-number">8</span><span>Terminer</span></div>
-    </nav>
-
+    <div class="work-intro"><span><strong>Une cellule = une position réelle.</strong> Modifiez le patron ; marquez séparément les croix brodées.</span><div class="intro-actions"><button id="undoBtn" type="button" title="Annuler (Ctrl/⌘ + Z)" disabled>↶ Annuler</button><button id="redoBtn" type="button" title="Rétablir (Ctrl/⌘ + Maj + Z)" disabled>↷ Rétablir</button><span id="validationChip" class="status-chip" role="status">Vérification…</span></div></div>
     <div class="layout">
-      <aside class="panel left-panel">
-        <div class="section-heading">
-          <div><div class="eyebrow">Point de départ</div><h2 class="section-title" style="margin-top:5px">Votre source</h2></div>
-          <span style="font-size:16px;color:#9ba398">↗</span>
+      <aside class="panel left-panel" aria-label="Motif et paramètres de l’ouvrage">
+        <div class="section-heading"><div><div class="eyebrow">Votre ouvrage</div><h2 class="section-title" style="margin-top:5px">Motif et toile</h2></div><span style="color:#9ba398">✳</span></div>
+        <label class="field"><span class="field-label">Nom du motif</span><input id="patternName" class="project-name-input" type="text" maxlength="100" aria-label="Nom du motif"></label>
+        <div class="section-heading" style="margin:12px 0 8px"><h2 class="section-title">Modèles de l’atelier</h2><span class="eyebrow">3 motifs</span></div>
+        <div class="mini-patterns">
+          <button class="mini-card" type="button" data-pattern="heart"><div class="mini-art">♥</div><span>Cœur sauvage</span></button>
+          <button class="mini-card" type="button" data-pattern="flower"><div class="mini-art">✿</div><span>Fleur des champs</span></button>
+          <button class="mini-card" type="button" data-pattern="moon"><div class="mini-art">☾</div><span>Jardin de lune</span></button>
         </div>
-
+        <div class="field-row">
+          <label class="field"><span class="field-label">Taille du modèle</span><select id="sizeSelect" aria-label="Taille du modèle"><option value="28">28 × 28 pts</option><option value="36">36 × 36 pts</option><option value="44">44 × 44 pts</option><option value="custom">Sur mesure</option></select></label>
+          <div class="field"><span class="field-label">Positions du patron</span><div id="gridPositions" class="field-control">—</div></div>
+        </div>
+        <div class="field-row">
+          <label class="field"><span class="field-label">Largeur · points</span><input id="widthInput" type="number" min="1" max="200" step="1"></label>
+          <label class="field"><span class="field-label">Hauteur · points</span><input id="heightInput" type="number" min="1" max="200" step="1"></label>
+        </div>
+        <button class="button inline-action" id="resizeBtn" type="button">Adapter la grille en conservant les cellules</button>
+        <p class="small-caption">Le changement de modèle régénère son dessin ; l’adaptation libre conserve les cellules aux mêmes coordonnées.</p>
+        <div class="divider"></div>
+        <div class="field-row">
+          <label class="field"><span class="field-label">Type de toile</span><input id="fabricType" type="text" maxlength="60" aria-label="Type de toile"></label>
+          <label class="field"><span class="field-label">Points / cm</span><input id="densityInput" type="number" min="0.1" max="100" step="0.1" aria-label="Densité en points par centimètre"></label>
+        </div>
+        <p class="small-caption">Densité choisie pour cet ouvrage. La toile initiale est Aïda à 5,5 points/cm ; ajustez selon votre toile.</p>
+        <div class="eyebrow" style="margin:5px 0">Marges de la toile · cm</div>
+        <div class="field-row">
+          <label class="field"><span class="field-label">Haut</span><input id="marginTop" type="number" min="0" max="100" step="0.1"></label>
+          <label class="field"><span class="field-label">Bas</span><input id="marginBottom" type="number" min="0" max="100" step="0.1"></label>
+          <label class="field"><span class="field-label">Gauche</span><input id="marginLeft" type="number" min="0" max="100" step="0.1"></label>
+          <label class="field"><span class="field-label">Droite</span><input id="marginRight" type="number" min="0" max="100" step="0.1"></label>
+        </div>
+        <p class="small-caption">Valeur initiale : 5 cm par côté, à confirmer selon le montage. Dimensions de toile = motif + ces marges.</p>
+        <div class="divider"></div>
         <label class="source-drop" id="dropZone" for="fileInput">
-          <div class="upload-icon">↑</div>
-          <strong>Déposez votre fichier ici</strong>
-          <span>ou cliquez pour parcourir<br>Photo · image · PDF · scan · patron</span>
+          <div class="upload-icon">↑</div><strong>Réimporter un patron JSON</strong>
+          <span>Déposez le fichier exporté ici ou cliquez pour le choisir.</span>
           <div class="file-name" id="fileName"></div>
         </label>
-        <input type="file" id="fileInput" accept="image/*,.pdf,.png,.jpg,.jpeg,.webp,.svg" hidden>
-
-        <div class="or-divider">ou décrivez votre idée</div>
-        <textarea class="prompt-box" id="promptInput" placeholder="Ex. : une branche de mimosa doré, 32 × 32 points…"></textarea>
-        <div class="prompt-actions">
-          <span class="helper">L’IA vous aide à la mettre en grille.</span>
-          <button class="button small" id="createPrompt">Créer ✦</button>
-        </div>
-        <button class="button primary analyze-button" id="analyzeBtn">✧ &nbsp; Analyser la source</button>
-
-        <div class="divider"></div>
-        <div class="section-heading" style="margin-bottom:10px">
-          <h2 class="section-title">Ou partir d’un modèle</h2>
-          <span class="eyebrow">3 idées</span>
-        </div>
-        <div class="pattern-row">
-          <span class="helper">Collection atelier</span>
-          <select id="sizeSelect" aria-label="Taille du patron">
-            <option value="36">36 × 36 pts</option>
-            <option value="28">28 × 28 pts</option>
-            <option value="44">44 × 44 pts</option>
-          </select>
-        </div>
-        <div class="mini-patterns">
-          <button class="mini-card selected" data-pattern="heart"><div class="mini-art">♥</div><span>Cœur sauvage</span></button>
-          <button class="mini-card" data-pattern="flower"><div class="mini-art">✿</div><span>Fleur des champs</span></button>
-          <button class="mini-card" data-pattern="moon"><div class="mini-art">☾</div><span>Jardin de lune</span></button>
-        </div>
-        <div class="divider"></div>
-        <div class="tip-card"><span class="tip-icon">✦</span><span>Importez une photo ou un patron : nous le transformons en grille claire, avec fils et fournitures à prévoir.</span></div>
+        <input type="file" id="fileInput" accept=".json,application/json" hidden>
+        <p id="importError" class="input-error" role="alert" hidden></p>
       </aside>
-
-      <section class="panel center-panel" aria-label="Aperçu 3D du patron">
-        <div class="scene-header">
-          <div><h1 class="scene-title">Cœur sauvage</h1><div class="scene-subtitle">Aperçu du patron · toile Aïda 14 ct</div></div>
-          <div class="scene-controls">
-            <button class="scene-control active" id="view3d" title="Vue en relief">3D</button>
-            <button class="scene-control" id="viewFlat" title="Vue de face">▦</button>
-            <button class="scene-control" id="resetCamera" title="Réinitialiser la vue">⟳</button>
-          </div>
+      <section class="panel center-panel" aria-label="Grille et aperçu du patron">
+        <div class="scene-header"><div><h1 class="scene-title" id="sceneTitle"></h1><div class="scene-subtitle" id="sceneSubtitle"></div></div>
+          <div class="scene-controls"><button class="scene-control" id="view3d" type="button" title="Vue en relief">3D</button><button class="scene-control active" id="viewFlat" type="button" title="Grille de broderie 2D">▦</button><button class="scene-control" id="resetCamera" type="button" title="Réinitialiser la vue 3D">⟳</button></div></div>
+        <div id="scene"><div id="gridView" class="grid-view"></div></div>
+        <div class="grid-edit-bar" id="gridEditBar">
+          <span>Fil</span><select id="activeThread" aria-label="Fil actif"></select>
+          <select id="stitchType" aria-label="Type de point" title="Point de croix, seul type pris en charge"><option value="cross">Croix</option></select>
+          <button id="eraseTool" type="button" aria-pressed="false" title="Gomme : effacer une cellule">⌫ <span class="erase-label">Effacer</span></button>
         </div>
-        <div id="scene"></div>
-        <div class="scene-badge" id="sceneBadge">36 × 36 points · 284 croix</div>
-        <div class="scene-hint">Glissez pour tourner · molette pour zoomer</div>
-        <div class="view-toolbar">
-          <button id="gridToggle" class="active">Grille</button>
-          <button id="stitchToggle" class="active">Croix</button>
+        <div class="atelier-tools" id="atelierTools">
+          <div class="tool-group" role="group" aria-label="Mode de travail"><button id="patternMode" type="button" class="active" aria-pressed="true">Patron</button><button id="stitchMode" type="button" aria-pressed="false">Broder</button></div>
+          <div class="tool-group" id="patternTools" role="group" aria-label="Outils du patron"><button id="brushTool" type="button" class="active" aria-pressed="true">✎ Pinceau</button><button id="fillTool" type="button" aria-pressed="false">▣ Remplir</button><button id="zoneTool" type="button" aria-pressed="false">▧ Zone</button><button id="panTool" type="button" aria-pressed="false">✥ Déplacer la vue</button></div>
+          <span id="stitchHint" hidden>Choisissez À FAIRE, EN COURS ou FAIT puis cliquez une croix.</span>
         </div>
+        <div class="three-options" id="threeOptions" hidden><div class="tool-group" role="group" aria-label="Orientation de la 3D"><button type="button" data-presentation="tilt" class="active">Incliné</button><button type="button" data-presentation="front">Face</button><button type="button" data-presentation="back">Arrière · illustratif</button></div><label>Filtrer <select id="realisationFilter" aria-label="Filtre des croix dans la 3D"><option value="all">Tout le patron</option><option value="done">Fait seulement</option><option value="remaining">Non fait</option></select></label><span id="rearNote" hidden>Verso illustratif : positions indicatives, trajet du fil non simulé.</span></div>
+        <div class="grid-actions" id="zoomTools"><button id="zoomOut" type="button" title="Réduire la grille">−</button><button id="zoomIn" type="button" title="Agrandir la grille">＋</button></div>
+        <div class="scene-badge" id="sceneBadge"></div>
+        <div class="scene-hint" id="sceneHint">Cliquez une cellule pour placer une croix · flèches pour se déplacer</div>
+        <div class="coordinate-bar" id="coordinateBar" aria-live="off">Grille : L — · C —</div>
+        <div class="view-toolbar"><button id="gridToggle" class="active" type="button">Grille</button><button id="stitchToggle" class="active" type="button">Croix</button></div>
       </section>
-
-      <aside class="panel right-panel">
-        <div class="section-heading">
-          <div><div class="eyebrow">Votre patron</div><h2 class="section-title" style="margin-top:5px">Fiche projet</h2></div>
-          <button class="button icon" id="infoBtn" title="Informations">i</button>
-        </div>
-        <div class="project-overview">
-          <div class="overview-icon" id="overviewIcon">♥</div>
-          <div><div class="overview-name" id="overviewName">Cœur sauvage</div><div class="overview-meta" id="overviewMeta">Niveau facile · Point de croix</div></div>
-        </div>
+      <aside class="panel right-panel" aria-label="Fiche projet et palette">
+        <div class="section-heading"><div><div class="eyebrow">Votre patron</div><h2 class="section-title" style="margin-top:5px">Fiche projet</h2></div><span style="color:#91a591">✳</span></div>
+        <div class="project-overview"><div class="overview-icon" id="overviewIcon">✳</div><div><div class="overview-name" id="overviewName"></div><div class="overview-meta" id="overviewMeta"></div></div></div>
         <div class="stats-grid">
-          <div class="stat"><strong id="stitchCount">284</strong><span>points à broder</span></div>
-          <div class="stat"><strong id="colorCount">5</strong><span>couleurs de fil</span></div>
-          <div class="stat"><strong id="fabricSize">6,5 × 6,5</strong><span>cm sur toile 14 ct</span></div>
-          <div class="stat"><strong id="timeEstimate">3 h 20</strong><span>temps estimé</span></div>
+          <div class="stat"><strong id="positionCount">—</strong><span>positions de grille</span></div>
+          <div class="stat"><strong id="stitchCount">—</strong><span>croix à broder</span></div>
+          <div class="stat"><strong id="emptyCount">—</strong><span>cellules vides</span></div>
+          <div class="stat"><strong id="colorCount">—</strong><span>couleurs utilisées</span></div>
+          <div class="stat wide"><strong id="motifSize">—</strong><span>cm · motif brodé (largeur × hauteur)</span></div>
+          <div class="stat wide"><strong id="fabricSize">—</strong><span>cm · toile avec les marges choisies</span></div>
         </div>
-        <div class="palette-title"><strong>Palette de fils</strong><span id="paletteMeta">5 coloris · mouliné</span></div>
+        <div class="surface-note" id="surfaceNote"></div>
+        <div class="palette-title"><strong>Palette · légende cliquable</strong><span id="paletteMeta"></span></div>
+        <button id="clearThreadFocus" type="button" class="clear-focus" hidden>Afficher tous les fils</button>
         <div class="thread-list" id="threadList"></div>
-        <div class="missing-note" id="missingNote">Il vous manque <strong>1 coloris</strong> pour commencer. Cliquez sur « à acheter » pour le marquer en stock.</div>
-        <div class="progress-section">
-          <div class="progress-heading"><span>Avancement du projet</span><span id="progressText">0 %</span></div>
-          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-          <div class="range-row"><span>Révéler</span><input type="range" min="0" max="100" value="100" id="revealRange"><span id="revealValue">100 %</span></div>
-          <div class="progress-controls">
-            <button class="button primary" id="stitchBtn">▶ &nbsp; Commencer</button>
-            <button class="button" id="validateBtn">✓ Valider</button>
-          </div>
-          <div class="status-line" id="statusLine">Patron prêt à être brodé.</div>
-        </div>
+        <div class="selection-info" id="selectionInfo" aria-live="polite">Sélectionnez une cellule de la grille.</div>
+        <div class="coordinate-nav"><strong>Aller à une coordonnée</strong><div><label>Ligne <input id="gotoRow" type="number" min="1" max="200" value="1"></label><label>Colonne <input id="gotoColumn" type="number" min="1" max="200" value="1"></label><button id="gotoBtn" type="button">Aller</button></div></div>
+        <div id="regionActions" class="region-actions" hidden><strong id="regionSummary"></strong><div><button id="duplicateRegion" type="button">Dupliquer…</button><button id="moveRegion" type="button">Déplacer…</button><button id="eraseRegion" type="button">Effacer la zone</button><button id="cancelRegion" type="button">✕</button></div><small>Choisissez une destination par clic (coin haut gauche). Annuler / Rétablir conserve la zone comme une seule opération.</small></div>
+        <p class="small-caption">Patron : clic pour placer, même fil pour retirer ; gomme, remplissage ou zone. Maj-clic sélectionne sans modifier. Suppr efface une case. Le pinceau s’utilise aussi par glissé.</p>
+        <section class="realisation-section" aria-label="Suivi réel de la broderie"><div class="progress-heading"><strong>Réalisation marquée</strong><strong id="progressPercent">0 %</strong></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div><div id="progressCounts" class="progress-counts">0 faites · 0 en cours · — restantes</div><div class="status-picker" role="group" aria-label="État à appliquer à la croix sélectionnée"><button type="button" data-progress-state="todo">À FAIRE</button><button type="button" data-progress-state="in-progress">EN COURS</button><button type="button" data-progress-state="done" class="active">FAIT</button></div><p class="small-caption">En mode Broder, cliquez une croix pour lui appliquer l’état choisi. Les cases non marquées sont « à faire » ; ce suivi ne change jamais le patron ni le curseur 3D.</p></section>
+        <section class="reading-section" aria-label="Lecture progressive par lignes"><strong>Lire par plages de lignes</strong><div class="reading-inputs"><label>De <input id="readStart" type="number" min="1" max="200" value="1"></label><label>à <input id="readEnd" type="number" min="1" max="200" value="10"></label><button id="applyRead" type="button">Lire</button><button id="readAll" type="button">Tout</button></div><small id="readingInfo">Toutes les lignes affichées. Lecture visuelle seulement : aucune croix masquée dans le patron.</small></section>
+        <div class="validation-box" id="validationBox"><strong id="validationTitle">Vérification…</strong><p id="validationDetails"></p></div>
+        <div class="reveal-section"><div class="progress-heading"><span>Aperçu partiel de la 3D</span><span id="revealValue">100 %</span></div><div class="range-row"><span>Révéler</span><input type="range" min="0" max="100" value="100" id="revealRange" aria-label="Pourcentage du motif affiché en 3D"></div><div class="status-line" id="statusLine">La fiche et l’export contiennent toujours le motif complet.</div></div>
       </aside>
     </div>
-    <div class="bottom-note">
-      <span>Un projet à la fois, <strong>un point après l’autre.</strong></span>
-      <span>✳ &nbsp;Votre travail est sauvegardé automatiquement</span>
-    </div>
+    <div class="bottom-note"><span>Un projet à la fois, <strong>un point après l’autre.</strong></span><span>✳ &nbsp;Enregistré localement sur cet appareil lorsque la sauvegarde est disponible.</span></div>
   </main>
 </div>
-
-<div class="toast" id="toast"></div>
-<div class="modal-backdrop" id="modalBackdrop">
-  <div class="modal">
-    <div class="eyebrow">L’Atelier Universel</div>
-    <h2 id="modalTitle">Votre patron est prêt</h2>
-    <p id="modalText">Votre projet est structuré en grille, ses couleurs sont identifiées et sa liste de fils est prête. Vous pouvez ajuster la vue, marquer vos fils en stock et suivre votre avancée point par point.</p>
-    <div class="modal-actions"><button class="button" id="closeModal">Continuer</button><button class="button primary" id="modalConfirm">C’est parti</button></div>
-  </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/controls/OrbitControls.js"></script>
-<script>
-(() => {
-  const colors = [
-    {name:"Rouge garance", code:"DMC 321", hex:"#b8434d"},
-    {name:"Rose poudré", code:"DMC 3716", hex:"#e89a9d"},
-    {name:"Rose clair", code:"DMC 818", hex:"#f2c6c5"},
-    {name:"Vert sauge", code:"DMC 524", hex:"#8ca58b"},
-    {name:"Vert profond", code:"DMC 3051", hex:"#536b55"},
-    {name:"Miel doré", code:"DMC 725", hex:"#d8a94e"},
-    {name:"Crème", code:"DMC 712", hex:"#eadcb8"}
-  ];
-  const paletteSets = {
-    heart:[0,1,2,3,4],
-    flower:[5,6,3,4,1],
-    moon:[4,3,5,6,2]
-  };
-  const names = {heart:"Cœur sauvage",flower:"Fleur des champs",moon:"Jardin de lune"};
-  const icons = {heart:"♥",flower:"✿",moon:"☾"};
-  let size = 36, type = "heart", pattern = [], scene, camera, renderer, controls, boardGroup, stitchGroup;
-  let gridObject, stitchesObject, reveal = 100, progress = 0, timer = null, analysisBusy = false;
-  let showGrid = true, showStitches = true, savedStocks = new Set(["DMC 3716","DMC 818","DMC 524","DMC 3051"]);
-  const $ = id => document.getElementById(id);
-  const toast = message => {
-    const el = $("toast"); el.textContent = message; el.classList.add("show");
-    clearTimeout(toast.timer); toast.timer = setTimeout(() => el.classList.remove("show"), 2600);
-  };
-
-  function buildPattern(kind, n) {
-    const grid = Array.from({length:n}, () => Array(n).fill(-1));
-    const mid = (n - 1) / 2;
-    if (kind === "heart") {
-      const scale = n * .43;
-      for (let r=0;r<n;r++) for (let c=0;c<n;c++) {
-        const x=(c-mid)/scale, y=(mid-r)/scale;
-        const q=Math.pow(x*x+y*y-1,3)-x*x*y*y*y;
-        if (q<=0) {
-          const edge = Math.abs(q) < .2 || q > -.14;
-          if (edge) grid[r][c]=0;
-          else if (x < -.28 && y > .16) grid[r][c]=2;
-          else if (x > .35 && y < -.12) grid[r][c]=1;
-          else grid[r][c]=Math.abs(x)+Math.abs(y)>.82 ? 1 : 2;
-        }
-      }
-      // Subtle botanical sprigs frame the heart.
-      for (let k=0;k<7;k++) {
-        const r=Math.floor(n*.39+k*.62), left=Math.floor(n*.20+k*.4), right=n-1-left;
-        if (r<n-2) {
-          grid[r][left]=k%2?3:4; grid[r][right]=k%2?4:3;
-        }
-      }
-    } else if (kind === "flower") {
-      const cx=mid, cy=mid, scale=n*.29;
-      for (let r=0;r<n;r++) for (let c=0;c<n;c++) {
-        const dx=(c-cx)/scale, dy=(r-cy)/scale, rad=Math.hypot(dx,dy), a=Math.atan2(dy,dx);
-        const petal=.64+.27*Math.cos(a*8);
-        if (rad<petal) grid[r][c]=rad<.18?5:(rad>.5?6:1);
-        const stemX=mid+Math.sin(r*.14)*2;
-        if (r>mid+4 && Math.abs(c-stemX)<1.35) grid[r][c]=3;
-        if (r>mid+5 && r<mid+12 && (Math.abs(c-(mid-5))<1.5 || Math.abs(c-(mid+5))<1.5)) grid[r][c]=4;
-      }
-    } else {
-      const cx=mid-2, cy=mid;
-      for (let r=0;r<n;r++) for (let c=0;c<n;c++) {
-        const x=(c-cx)/(n*.31), y=(r-cy)/(n*.34);
-        const moon=Math.hypot(x,y)<1 && Math.hypot(x-.43,y-.02)>.79;
-        if (moon) grid[r][c]=Math.hypot(x,y)>.84?5:6;
-        const starPoints=[[.22,.18],[-.48,-.42],[.5,-.5],[-.58,.42],[.35,.58]];
-        for(const [sx,sy] of starPoints) if(Math.abs((c-mid)/n-sx)<.025 && Math.abs((r-mid)/n-sy)<.025) grid[r][c]=2;
-        if (r>n*.72 && r<n*.84 && Math.abs(c-mid)<3) grid[r][c]=3;
-        if (r>n*.76 && (Math.abs(c-mid-5)<2 || Math.abs(c-mid+5)<2)) grid[r][c]=4;
-      }
-    }
-    // Trim ornamental sprigs from very small layouts.
-    return grid;
-  }
-
-  function countStitches() { return pattern.reduce((sum,row)=>sum+row.filter(v=>v>=0).length,0); }
-  function usedColors() { return [...new Set(pattern.flat().filter(v=>v>=0))]; }
-
-  function renderThreads() {
-    const used=usedColors(), list=$("threadList");
-    list.innerHTML="";
-    used.forEach(idx=>{
-      const item=colors[idx], quantity=Math.max(1,Math.ceil(pattern.flat().filter(v=>v===idx).length/70));
-      const stocked=savedStocks.has(item.code);
-      const row=document.createElement("div"); row.className="thread-row";
-      row.innerHTML=`<span class="thread-swatch" style="background:${item.hex}"></span>
-        <span class="thread-info"><strong>${item.name}</strong><small>${item.code} · mouliné</small></span>
-        <span class="thread-quantity">${quantity} échev. <button class="stock-pill ${stocked?"":"missing"}" data-code="${item.code}">${stocked?"en stock":"à acheter"}</button></span>`;
-      list.appendChild(row);
-    });
-    list.querySelectorAll(".stock-pill").forEach(btn=>btn.addEventListener("click",()=>{
-      if(savedStocks.has(btn.dataset.code)) savedStocks.delete(btn.dataset.code); else savedStocks.add(btn.dataset.code);
-      renderThreads(); updateMissing();
-    }));
-    $("colorCount").textContent=used.length;
-    $("paletteMeta").textContent=`${used.length} coloris · mouliné`;
-    updateMissing();
-  }
-  function updateMissing() {
-    const missing=usedColors().filter(i=>!savedStocks.has(colors[i].code)).length;
-    $("missingNote").style.display=missing?"block":"none";
-    $("missingNote").innerHTML=missing===1?'Il vous manque <strong>1 coloris</strong> pour commencer. Cliquez sur « à acheter » pour le marquer en stock.':`Il vous manque <strong>${missing} coloris</strong> pour commencer. Cliquez sur « à acheter » pour les marquer en stock.`;
-  }
-
-  function updateDetails() {
-    const count=countStitches(), used=usedColors();
-    $("projectName").textContent=names[type]; $("overviewName").textContent=names[type];
-    $("overviewIcon").textContent=icons[type];
-    $("sceneBadge").textContent=`${size} × ${size} points · ${count} croix`;
-    $("stitchCount").textContent=count.toLocaleString("fr-FR");
-    $("fabricSize").textContent=`${(size/5.5).toFixed(1).replace(".",",")} × ${(size/5.5).toFixed(1).replace(".",",")}`;
-    const mins=Math.round(count*.7), hrs=Math.floor(mins/60), rem=mins%60;
-    $("timeEstimate").textContent=`${hrs} h ${String(rem).padStart(2,"0")}`;
-    $("sceneBadge").textContent=`${size} × ${size} points · ${count} croix`;
-    renderThreads();
-    renderThreePattern();
-    updateProgress();
-  }
-
-  function initThree() {
-    const host=$("scene");
-    scene=new THREE.Scene(); scene.background=new THREE.Color("#efede5");
-    camera=new THREE.PerspectiveCamera(35,1,.1,100);
-    camera.position.set(8,8.5,10);
-    renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:"high-performance"});
-    renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-    renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-    renderer.outputColorSpace=THREE.SRGBColorSpace;
-    renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.15;
-    host.appendChild(renderer.domElement);
-    controls=new THREE.OrbitControls(camera,renderer.domElement);
-    controls.target.set(0,0,0); controls.enableDamping=true; controls.dampingFactor=.08;
-    controls.minDistance=6; controls.maxDistance=22; controls.maxPolarAngle=Math.PI*.48;
-    scene.add(new THREE.HemisphereLight(0xfff9ed,0x68705c,2));
-    const key=new THREE.DirectionalLight(0xfff5df,3.1); key.position.set(-4,10,6); key.castShadow=true;
-    key.shadow.mapSize.set(1024,1024); key.shadow.camera.left=-9; key.shadow.camera.right=9;
-    key.shadow.camera.top=9; key.shadow.camera.bottom=-9; key.shadow.bias=-.0003; scene.add(key);
-    const fill=new THREE.DirectionalLight(0xdce9f1,1.1); fill.position.set(7,5,-5); scene.add(fill);
-    const floor=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:"#efede5",roughness:1}));
-    floor.rotation.x=-Math.PI/2; floor.position.y=-.35; floor.receiveShadow=true; scene.add(floor);
-    boardGroup=new THREE.Group(); scene.add(boardGroup);
-    const resize=()=>{
-      const w=host.clientWidth, h=host.clientHeight;
-      if(!w||!h)return;
-      renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix();
-    };
-    new ResizeObserver(resize).observe(host); resize();
-    renderer.setAnimationLoop(()=>{controls.update();renderer.render(scene,camera);});
-    renderThreePattern();
-  }
-
-  function makeFabricTexture() {
-    const canvas=document.createElement("canvas"); canvas.width=128; canvas.height=128;
-    const ctx=canvas.getContext("2d"); ctx.fillStyle="#e6ddc9"; ctx.fillRect(0,0,128,128);
-    for(let i=0;i<2600;i++){
-      const x=Math.random()*128,y=Math.random()*128;
-      ctx.fillStyle=Math.random()>.5?"rgba(255,255,255,.12)":"rgba(117,100,72,.055)";
-      ctx.fillRect(x,y,1,1);
-    }
-    ctx.strokeStyle="rgba(129,111,83,.10)"; ctx.lineWidth=.5;
-    for(let i=0;i<=128;i+=4){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,128);ctx.stroke();ctx.beginPath();ctx.moveTo(0,i);ctx.lineTo(128,i);ctx.stroke();}
-    const tex=new THREE.CanvasTexture(canvas); tex.wrapS=tex.wrapT=THREE.RepeatWrapping; tex.repeat.set(3,3); tex.colorSpace=THREE.SRGBColorSpace;
-    return tex;
-  }
-
-  function renderThreePattern() {
-    if(!scene || !boardGroup)return;
-    while(boardGroup.children.length) {
-      const child=boardGroup.children.pop();
-      child.traverse?.(o=>{o.geometry?.dispose?.(); if(o.material){if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material.dispose();}});
-    }
-    const cell=6.5/size, extent=size*cell;
-    const backing=new THREE.Mesh(new THREE.BoxGeometry(extent+.30,.22,extent+.30),new THREE.MeshStandardMaterial({color:"#b8a98e",roughness:.78}));
-    backing.position.y=-.13; backing.castShadow=true; backing.receiveShadow=true; boardGroup.add(backing);
-    const cloth=new THREE.Mesh(new THREE.BoxGeometry(extent,.035,extent),new THREE.MeshStandardMaterial({map:makeFabricTexture(),color:"#f0e8d7",roughness:1}));
-    cloth.position.y=-.005; cloth.receiveShadow=true; boardGroup.add(cloth);
-    const frameMat=new THREE.MeshStandardMaterial({color:"#d6c9ae",roughness:.65});
-    for(const [x,z,w,d] of [[0,-extent/2-.08,extent+.34,.11],[0,extent/2+.08,extent+.34,.11],[-extent/2-.08,0,.11,extent+.17],[extent/2+.08,0,.11,extent+.17]]){
-      const rail=new THREE.Mesh(new THREE.BoxGeometry(w,.12,d),frameMat); rail.position.set(x,-.105,z); rail.castShadow=true; boardGroup.add(rail);
-    }
-    const gridPositions=[];
-    for(let i=0;i<=size;i++){
-      const t=-extent/2+i*cell;
-      gridPositions.push(-extent/2,.018,t,extent/2,.018,t);
-      gridPositions.push(t,.018,-extent/2,t,.018,extent/2);
-    }
-    const gridGeo=new THREE.BufferGeometry();
-    gridGeo.setAttribute("position",new THREE.Float32BufferAttribute(gridPositions,3));
-    const gridMat=new THREE.LineBasicMaterial({color:"#9d927e",transparent:true,opacity:.25});
-    gridObject=new THREE.LineSegments(gridGeo,gridMat); gridObject.visible=showGrid; boardGroup.add(gridObject);
-    stitchGroup=new THREE.Group();
-    const boxGeo=new THREE.BoxGeometry(cell*.76,.035,cell*.105);
-    const byColor={};
-    usedColors().forEach(i=>byColor[i]=[]);
-    const all=pattern.flatMap((row,r)=>row.map((v,c)=>({v,r,c})).filter(o=>o.v>=0));
-    const visibleCount=Math.floor(all.length*reveal/100);
-    all.slice(0,visibleCount).forEach(({v,r,c})=>{
-      const x=(c-(size-1)/2)*cell, z=(r-(size-1)/2)*cell;
-      byColor[v].push({x,z,rot:Math.PI/4});
-      byColor[v].push({x,z,rot:-Math.PI/4});
-    });
-    Object.entries(byColor).forEach(([idx,items])=>{
-      if(!items.length)return;
-      const mesh=new THREE.InstancedMesh(boxGeo,new THREE.MeshStandardMaterial({color:colors[idx].hex,roughness:.58,metalness:.02}),items.length);
-      mesh.castShadow=true; mesh.receiveShadow=true;
-      const dummy=new THREE.Object3D();
-      items.forEach((p,i)=>{dummy.position.set(p.x,.045,p.z);dummy.rotation.set(0,p.rot,0);dummy.updateMatrix();mesh.setMatrixAt(i,dummy.matrix);});
-      mesh.instanceMatrix.needsUpdate=true; stitchGroup.add(mesh);
-    });
-    stitchGroup.visible=showStitches; boardGroup.add(stitchGroup);
-    boardGroup.rotation.y=0;
-  }
-
-  function updateProgress() {
-    $("progressText").textContent=`${Math.round(progress)} %`;
-    $("progressFill").style.width=`${progress}%`;
-    $("statusLine").textContent=progress>=100?"Projet terminé — bravo pour chaque point !":progress>0?`${Math.round(progress*countStitches()/100)} points brodés · vous avancez à votre rythme.`:"Patron prêt à être brodé.";
-  }
-  function setStep(index) {
-    document.querySelectorAll(".step").forEach((step,i)=>{
-      step.classList.toggle("active",i===index);
-      step.classList.toggle("done",i<index);
-    });
-  }
-  function runAnalysis() {
-    if(analysisBusy)return;
-    analysisBusy=true; setStep(1);
-    $("analyzeBtn").textContent="◌  Analyse en cours…";
-    $("statusLine").textContent="Analyse des formes, de la grille et des couleurs…";
-    setTimeout(()=>{
-      analysisBusy=false; $("analyzeBtn").innerHTML="✧ &nbsp; Analyser la source";
-      setStep(2); $("statusLine").textContent="Source reconstruite en grille — couleurs et fils identifiés.";
-      toast("Votre source a été reconstruite en patron éditable.");
-      setTimeout(()=>setStep(3),800);
-    },1300);
-  }
-
-  document.querySelectorAll(".mini-card").forEach(btn=>btn.addEventListener("click",()=>{
-    document.querySelectorAll(".mini-card").forEach(b=>b.classList.remove("selected"));
-    btn.classList.add("selected"); type=btn.dataset.pattern; pattern=buildPattern(type,size); progress=0;
-    $("revealRange").value=100; reveal=100; $("revealValue").textContent="100%";
-    updateDetails(); setStep(2); $("saveState").textContent="Modèle chargé";
-    toast(`${names[type]} ajouté à votre atelier.`);
-  }));
-  $("sizeSelect").addEventListener("change",e=>{size=+e.target.value;pattern=buildPattern(type,size);progress=0;updateDetails();toast(`Grille ajustée : ${size} × ${size} points.`);});
-  $("analyzeBtn").addEventListener("click",runAnalysis);
-  $("createPrompt").addEventListener("click",()=>{
-    const text=$("promptInput").value.trim();
-    if(!text){toast("Décrivez votre idée pour créer un patron.");$("promptInput").focus();return;}
-    const t=text.toLowerCase();
-    type=t.includes("lune")||t.includes("étoile")?"moon":t.includes("fleur")||t.includes("mimosa")||t.includes("rose")?"flower":"heart";
-    document.querySelectorAll(".mini-card").forEach(b=>b.classList.toggle("selected",b.dataset.pattern===type));
-    pattern=buildPattern(type,size);progress=0;updateDetails();setStep(0);
-    $("saveState").textContent="Idée transformée en patron";
-    toast("Votre idée a pris forme en grille. Vous pouvez maintenant l’analyser.");
-  });
-  $("fileInput").addEventListener("change",e=>{
-    const file=e.target.files[0]; if(!file)return;
-    $("fileName").textContent=`✓ ${file.name}`;
-    $("saveState").textContent="Source importée";
-    if(file.type.startsWith("image/")){
-      const reader=new FileReader();
-      reader.onload=()=>{const img=new Image();img.onload=()=>{toast("Image importée — prête pour l’analyse.");};img.src=reader.result;};
-      reader.readAsDataURL(file);
-    } else toast("Fichier importé — prêt pour l’analyse.");
-    setStep(0);
-  });
-  const dropZone=$("dropZone");
-  ["dragenter","dragover"].forEach(event=>dropZone.addEventListener(event,e=>{e.preventDefault();dropZone.classList.add("dragging");}));
-  ["dragleave","drop"].forEach(event=>dropZone.addEventListener(event,e=>{e.preventDefault();dropZone.classList.remove("dragging");}));
-  dropZone.addEventListener("drop",e=>{const f=e.dataTransfer.files[0];if(!f)return;$("fileName").textContent=`✓ ${f.name}`;$("saveState").textContent="Source importée";toast("Source importée — lancez l’analyse.");});
-  $("revealRange").addEventListener("input",e=>{
-    reveal=+e.target.value; $("revealValue").textContent=`${reveal}%`; renderThreePattern();
-    setStep(3);
-  });
-  $("gridToggle").addEventListener("click",e=>{showGrid=!showGrid;e.currentTarget.classList.toggle("active",showGrid);if(gridObject)gridObject.visible=showGrid;});
-  $("stitchToggle").addEventListener("click",e=>{showStitches=!showStitches;e.currentTarget.classList.toggle("active",showStitches);if(stitchGroup)stitchGroup.visible=showStitches;});
-  $("view3d").addEventListener("click",()=>{
-    $("view3d").classList.add("active");$("viewFlat").classList.remove("active");
-    camera.position.set(8,8.5,10);controls.maxPolarAngle=Math.PI*.48;controls.update();
-  });
-  $("viewFlat").addEventListener("click",()=>{
-    $("viewFlat").classList.add("active");$("view3d").classList.remove("active");
-    camera.position.set(0,13,0.01);controls.maxPolarAngle=Math.PI;controls.update();
-  });
-  $("resetCamera").addEventListener("click",()=>{camera.position.set(8,8.5,10);controls.target.set(0,0,0);controls.update();});
-  $("stitchBtn").addEventListener("click",()=>{
-    if(timer){clearInterval(timer);timer=null;$("stitchBtn").innerHTML="▶ &nbsp; Reprendre";toast("Pause — votre progression est conservée.");return;}
-    if(progress>=100)progress=0;
-    setStep(5);$("stitchBtn").innerHTML="Ⅱ &nbsp; Pause";
-    timer=setInterval(()=>{
-      progress=Math.min(100,progress+.18); updateProgress();
-      if(progress>=100){clearInterval(timer);timer=null;$("stitchBtn").innerHTML="✓ &nbsp; Terminé";setStep(7);toast("Patron terminé. Quelle belle broderie !");}
-    },120);
-  });
-  $("validateBtn").addEventListener("click",()=>{
-    setStep(4);$("statusLine").textContent="Patron validé — vous pouvez commencer à broder.";
-    $("modalTitle").textContent="Patron validé ✦";
-    $("modalText").textContent=`Votre grille de ${countStitches()} points est prête, avec ${usedColors().length} coloris repérés. Votre toile estimée : ${$("fabricSize").textContent} cm. Vérifiez vos fils avant de commencer.`;
-    $("modalBackdrop").classList.add("show");
-  });
-  $("closeModal").addEventListener("click",()=>$("modalBackdrop").classList.remove("show"));
-  $("modalConfirm").addEventListener("click",()=>{$("modalBackdrop").classList.remove("show");setStep(5);toast("À vous de jouer — belle broderie !");});
-  $("infoBtn").addEventListener("click",()=>{
-    $("modalTitle").textContent="Votre fiche projet";
-    $("modalText").textContent=`${names[type]} · ${size} × ${size} points · ${countStitches()} croix · toile Aïda 14 ct. Estimation : ${$("timeEstimate").textContent}. Les quantités de fil sont indicatives et calculées selon la palette sélectionnée.`;
-    $("modalBackdrop").classList.add("show");
-  });
-  $("newProject").addEventListener("click",()=>{
-    $("promptInput").value="";$("fileName").textContent="";progress=0;type="heart";
-    pattern=buildPattern(type,size);updateDetails();setStep(0);$("saveState").textContent="Nouveau projet";
-    toast("Un nouveau projet vous attend.");
-  });
-  $("exportBtn").addEventListener("click",()=>{
-    const data={project:names[type],size:`${size}x${size}`,stitches:countStitches(),palette:usedColors().map(i=>({name:colors[i].name,code:colors[i].code,hex:colors[i].hex})),grid:pattern,progress:Math.round(progress)};
-    const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
-    const link=document.createElement("a");link.href=URL.createObjectURL(blob);link.download=`${names[type].toLowerCase().replaceAll(" ","-")}-patron.json`;link.click();URL.revokeObjectURL(link.href);
-    toast("Patron numérique exporté.");
-  });
-  document.querySelectorAll(".step").forEach(el=>el.addEventListener("click",()=>{
-    const i=+el.dataset.step;setStep(i);
-    if(i===4){$("validateBtn").click();}
-    else if(i===5||i===6){$("statusLine").textContent=i===5?"Prête à broder — commencez quand vous le souhaitez.":"Suivez votre avancée avec le bouton de broderie.";}
-    else if(i===7&&progress<100)toast("Terminez vos points pour célébrer votre ouvrage.");
-  }));
-
-  pattern=buildPattern(type,size);
-  initThree();
-  updateDetails();
-})();
-</script>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script type="module" src="./src/app.mjs"></script>
 </body>
 </html>
