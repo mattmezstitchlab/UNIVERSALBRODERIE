@@ -6,7 +6,7 @@ L’atelier est un **site statique** (HTML, modules JavaScript et Three.js local
 
 Le travail complet de cette session est sur **`arena/01a0cc09-universalbroderie`**. Le dépôt GitHub utilise **`main`** comme branche de production par défaut ; tant que cette version n’a pas été fusionnée dans `main`, importer le dépôt et déployer `main` publierait **l’ancienne version**, pas l’atelier décrit ici.
 
-**Chemin recommandé :** vérifier la Pull Request de `arena/01a0cc09-universalbroderie` vers `main`, la fusionner sur GitHub, puis créer le projet Vercel. Ne pas sélectionner un sous-dossier comme racine. Si vous voulez d’abord un aperçu sans fusion, connecter le dépôt à Vercel et utiliser le déploiement **Preview** de cette branche ; n’associez pas de domaine public à l’éventuel premier déploiement de l’ancien `main`. Sur Vercel, la production suit `main` par défaut ; une autre branche peut être choisie dans **Settings → Environments → Production → Branch Tracking**, si vous décidez expressément de déployer cette branche en production.
+**Chemin recommandé :** vérifier la [Pull Request #1](https://github.com/mattmezstitchlab/UNIVERSALBRODERIE/pull/1) de `arena/01a0cc09-universalbroderie` vers `main`, la fusionner sur GitHub, puis créer le projet Vercel. Ne pas sélectionner un sous-dossier comme racine. Si vous voulez d’abord un aperçu sans fusion, connecter le dépôt à Vercel et utiliser le déploiement **Preview** de cette branche ; n’associez pas de domaine public à l’éventuel premier déploiement de l’ancien `main`. Sur Vercel, la production suit `main` par défaut ; une autre branche peut être choisie dans **Settings → Environments → Production → Branch Tracking**, si vous décidez expressément de déployer cette branche en production.
 
 ## Créer le projet
 
