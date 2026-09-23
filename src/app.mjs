@@ -10,6 +10,7 @@ import { progressAt, setProgress, calculateProgress } from './progress.mjs';
 import { applyCellChanges, fillConnected, rectangleBetween, copyRegion, pasteRegion } from './editing.mjs';
 import { createHistory } from './history.mjs';
 import { selectVisibleStitches } from './view-filters.mjs';
+import { mountMayaImport } from './maya-image.mjs';
 
 const $ = id => document.getElementById(id);
 const countFormat = new Intl.NumberFormat('fr-FR');
@@ -896,6 +897,20 @@ for (const name of ['dragleave', 'drop']) dropZone.addEventListener(name, event 
 });
 dropZone.addEventListener('drop', event => importFile(event.dataTransfer?.files?.[0]));
 
+
+window.addEventListener('maya:import-project', event => {
+  const imported = event.detail?.project;
+  if (!imported) return;
+  resetTransientView();
+  gridZoom = null;
+  activeThreadId = imported.palette?.[0]?.threadId;
+  if (commit(imported, { controls: true, edited: true })) {
+    gridEdited = true;
+    showView('2d');
+    toast('MAYA : image transformée en patron éditable.');
+  }
+});
+
 try {
   scene3d = new EmbroideryScene($('scene'));
   scene3d.setVisible(false);
@@ -904,6 +919,9 @@ try {
   toast('Vue 3D indisponible : la grille 2D et le patron restent accessibles.');
 }
 refreshInputs(); renderAll(); showView('2d');
+const maya = mountMayaImport();
+$('mayaBtn').addEventListener('click', () => maya.open());
+$('mayaImportBtn').addEventListener('click', () => maya.open());
 if (loadError) {
   $('saveState').textContent = 'Enregistrement local illisible · non écrasé';
   $('saveState').classList.add('problem');
